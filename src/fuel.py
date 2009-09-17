@@ -5,6 +5,7 @@ from time import strftime
 from string import replace
 #from db import db
 
+databasepath = u'E:\\Python\\src\\test.db'
 db=e32db.Dbms()
 dbv=e32db.Db_view()
 #db.open(u'e:\\data\\python\\test.db')
@@ -13,8 +14,9 @@ class Fuel( object ):
     
     ## The constructor.
     def __init__( self ):
-        
-        
+        db.open(databasepath)
+        try: sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date VARCHAR, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
+        except: pass #gia creato
         self.list_fuel = [u'Insert', u'View', u'Config']
         self.res_fuel = appuifw.selection_list(self.list_fuel)
         
@@ -39,7 +41,7 @@ class Fuel( object ):
         self._suppliers=[u'Esso', u'Agip', u'Shell']
 
         # creazione Form
-        self._iFields = [( u'Date', 'date'),
+        self._iFields = [( u'Date', 'date', time.time()),
                          ( u'Price for liter', 'float'),
                          ( u'Euro', 'float'),
                          ( u'Paid', 'combo', ( self._payments, 0 ) ),
@@ -79,7 +81,8 @@ class Fuel( object ):
         # deve essere una stringa
         datoStringa = "%s" % self._iForm[2][2]
         # devo sostituire il punto con la virgola
-        euro = replace(datoStringa,'.',',')
+        # euro = replace(datoStringa,'.',',')
+        euro = float(datoStringa)
         return euro
 
     ## ritorna il tipo di Pagamento
@@ -120,19 +123,22 @@ class Fuel( object ):
             f.write(string)
             f.close()
             appuifw.note(u"Save to file txt.","info")
-            db.open(u'e:\\Python\\src\\test.db')
-            db.execute("insert into fuel (1, 'date', 'priceLiter' , 'euro' , 'paid' , 'who' , 'km' , 'another') values('%s','%f','%f','%s','%s','%f','%s')" % (date, priceLiter, euro, paid, who, km, another))
+            db.open(databasepath)
+            db.execute(u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES ('%s',%f,%f,'%s','%s',%d,'%s')" %( date, priceLiter, euro, paid, who, km, another ))
             appuifw.note(u"Save to database.","info")
 	
     
     def view(self):
         #to fetch the whole dataset
-        dbv.prepare(db,u'select * from fuel')
+        try: dbv.prepare(db,u'select * from fuel')
+        except:
+		    db.open(databasepath)
+		    dbv.prepare(db,u'select * from fuel')
 
         for i in range(1,dbv.count_line()+1): #1 to number of rows
             dbv.get_line() #grabs the current row
-            for i in range(1,self.dbv.col_count()+1):
-                print dbv.col(i) #prints each column data
+            for l in range(1,dbv.col_count()+1):
+                appuifw.note(unicode( dbv.col(l) ))#prints each column data
             dbv.next_line() #move to the next rowset
         appuifw.Text() 
 	
