@@ -130,15 +130,16 @@ class Fuel( object ):
     
     def view(self):
         #to fetch the whole dataset
-        try: dbv.prepare(db,u'select * from fuel')
+        sql_string = u'SELECT * FROM fuel ORDER BY date DESC'
+        try: dbv.prepare(db,sql_string)
         except:
 		    db.open(databasepath)
-		    dbv.prepare(db,u'select * from fuel')
+		    dbv.prepare(db,sql_string)
 
         for i in range(1,dbv.count_line()+1): #1 to number of rows
             dbv.get_line() #grabs the current row
             for l in range(1,dbv.col_count()+1):
-                appuifw.note(unicode( dbv.col(l) ))#prints each column data
+                print unicode( dbv.col(l) ) #prints each column data
             dbv.next_line() #move to the next rowset
         appuifw.Text() 
 	
