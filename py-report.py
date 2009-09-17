@@ -1,14 +1,14 @@
 import appuifw, e32, os, sys, e32db
 sys.path.append("E:\\Python\\src") 
 #from db import db
-
+dbpath=u'E:\\Python\\src\\test.db'
 db=e32db.Dbms()
 dbv=e32db.Db_view()
 try:
-    db.open(u'E:\\Python\\src\\test.db')
+    db.open(dbpath)
 except:
-    db.create(u'E:\\Python\\src\\test.db')
-    db.open(u'E:\\Python\\src\\test.db')
+    db.create(dbpath)
+    db.open(dbpath)
 
     #to create ur table
     #db.execute(u"create table fuel (id counter, date varchar, priceLiter float, euro float, paid varchar, who varchar, km float, another long varchar)")
@@ -54,8 +54,8 @@ class pyreport:
         
     def exit(self):
         appuifw.note(u"Goodbye", 'info')
-        appuifw.app.set_exit()
         self.true = False
+        #appuifw.app.set_exit()
 
 
 
