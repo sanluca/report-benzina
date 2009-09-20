@@ -5,7 +5,7 @@ from time import strftime
 from string import replace
 #from db import db
 
-databasepath = u'E:\\Python\\src\\test.db'
+databasepath = u'c:\\Python\\src\\test.db'
 db=e32db.Dbms()
 dbv=e32db.Db_view()
 #db.open(u'e:\\data\\python\\test.db')
@@ -129,7 +129,8 @@ class Fuel( object ):
 	
     
     def view(self):
-        #to fetch the whole dataset
+        self.text = appuifw.Text()
+		#to fetch the whole dataset
         sql_string = u'SELECT * FROM fuel ORDER BY date DESC'
         
         try: 
@@ -149,10 +150,12 @@ class Fuel( object ):
                 except:
                     result.append(None)
               
+            self.text.add(unicode(result[1]) + u'\n')
             rows.append(result[1])
             dbv.next_line() #move to the next rowset
             
         print rows
-        appuifw.body = appuifw.Text(rows)
+        appuifw.body = self.text
+       
         
 	
