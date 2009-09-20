@@ -117,12 +117,12 @@ class Fuel( object ):
             km = self.getKm()
             another = self.getAnother()
             # scrivo i dati in una stringa
-            string = "%s;%s;%s;%s;%s;%s;%s\n" % (date, priceLiter, euro, paid, who, km, another)
+            #string = "%s;%s;%s;%s;%s;%s;%s\n" % (date, priceLiter, euro, paid, who, km, another)
             # scrivo la stringa su un file txt
-            f=open('E:\\Python\\src\\spesa.txt', 'a')
-            f.write(string)
-            f.close()
-            appuifw.note(u"Save to file txt.","info")
+            #f=open('E:\\Python\\src\\spesa.txt', 'a')
+            #f.write(string)
+            #f.close()
+            #appuifw.note(u"Save to file txt.","info")
             db.open(databasepath)
             db.execute(u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES ('%s',%f,%f,'%s','%s',%d,'%s')" %( date, priceLiter, euro, paid, who, km, another ))
             appuifw.note(u"Save to database.","info")
@@ -131,18 +131,28 @@ class Fuel( object ):
     def view(self):
         #to fetch the whole dataset
         sql_string = u'SELECT * FROM fuel ORDER BY date DESC'
-        try: dbv.prepare(db,sql_string)
+        
+        try: 
+            dbv.prepare(db,sql_string)
         except:
 		    db.open(databasepath)
 		    dbv.prepare(db,sql_string)
+        
+        rows = []
 
         for i in range(1,dbv.count_line()+1): #1 to number of rows
             dbv.get_line() #grabs the current row
+            result = []
             for l in range(1,dbv.col_count()+1):
-                print unicode( dbv.col(l) ) #prints each column data
+                try:
+                    result.append( dbv.col(l) )
+                except:
+                    result.append(None)
+              
+            rows.append(result[1])
             dbv.next_line() #move to the next rowset
-        appuifw.Text() 
-	
-	
-	
+            
+        print rows
+        appuifw.body = appuifw.Text(rows)
+        
 	
