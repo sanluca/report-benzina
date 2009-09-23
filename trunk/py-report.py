@@ -1,65 +1,62 @@
-import appuifw, e32, os, sys, e32db
-sys.path.append("E:\\Python\\src") 
-#from db import db
-dbpath=u'E:\\Python\\src\\test.db'
-db=e32db.Dbms()
-dbv=e32db.Db_view()
+import appuifw, e32, os, sys, e32db, key_codes
+
+this_path = "c:\\data\\Python\\src"
+# this_path = "E:\\Python\\src"
+sys.path.append(this_path) 
+
+dbpath = u"c:\\data\\Python\\src\\test.db"
+# dbpath = u"E:\\Python\\src\\test.db"
+
+## Initialize database
+db = e32db.Dbms()
 try:
-    db.open(dbpath)
+	db.open(dbpath)
 except:
-    db.create(dbpath)
-    db.open(dbpath)
-
-    #to create ur table
-    #db.execute(u"create table fuel (id counter, date varchar, priceLiter float, euro float, paid varchar, who varchar, km float, another long varchar)")
-
-class pyreport:
-    def __init__(self):
-        appuifw.app.title = u'Py-Report'
-        appuifw.app.screen='full'
-        appuifw.note(u"Welcom to Py-Report", 'info')
-        self.true = True
-    def run(self):
-        while self.true:
-            self.refresh()
-            self.menu()
-            
-    def refresh(self):
-        self.lista = [u'Hours',u'Cabins',u'Fuel',u'Exit']
-        self.res = appuifw.selection_list(self.lista)
-
-    def menu(self):
-        if self.res == 0:
-            self.hours()
-        elif self.res == 1:
-            self.cabins()
-        elif self.res == 2:
-            self.fuel()
-        elif self.res == 3:
-            self.exit()
-    
-    def hours(self):
-        import hours
-        hours.Hours()
-    
-    def cabins(self):
-        import cabins
-        cabins.Cabins()
-                                                 
-    def fuel(self):
-    	import fuel
-    	fuel.Fuel()
-    	
-       	
-        
-    def exit(self):
-        appuifw.note(u"Goodbye", 'info')
-        self.true = False
-        #appuifw.app.set_exit()
+	db.create(dbpath)
+	db.open(dbpath)
+	try: sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date VARCHAR, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
+	except: pass # gia creato
+db.close()
 
 
+class _app:
+	def __init__(self):
+		self.lock = e32.Ao_lock()
+		self.list_box = None
+		appuifw.app.title = u"Py-Report"
+		appuifw.app.screen="normal"
+		appuifw.note(u"Welcome to Py-Report")
+		self.lista = [u"Hours", u"Cabins", u"Fuel", u"Exit"]
+		self._initialize_main_()
 
-if __name__ == '__main__':
-    pyreport().run()
+	def _initialize_main_(self):
+		appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
+		self.list_box = appuifw.Listbox(map(lambda x:x, self.lista))
+		self.list_box.bind(key_codes.EKeySelect, self.select_menu)
+		appuifw.app.body = self.list_box
+		appuifw.app.exit_key_handler = self.exit
 
+	def run(self):
+		self.lock.wait()
 
+	def select_menu(self):
+		res = self.list_box.current()
+		if res == 0:
+			import hours
+			hours.Hours()
+		elif res == 1:
+			import cabins
+			cabins.Cabins()
+		elif res == 2:
+			import fuel
+			fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
+		elif res == 3:
+			self.exit()
+
+	def exit(self):
+		appuifw.note(u"Goodbye")
+		self.lock.signal()
+		# appuifw.app.set_exit()
+
+pyReport = _app()
+pyReport.run()
