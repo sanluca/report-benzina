@@ -1,11 +1,11 @@
 import appuifw, e32, os, sys, e32db, key_codes
 
-this_path = "c:\\data\\Python\\src"
-# this_path = "E:\\Python\\src"
+# this_path = "c:\\data\\Python\\src"
+this_path = "E:\\Python\\src"
 sys.path.append(this_path) 
 
-dbpath = u"c:\\data\\Python\\src\\test.db"
-# dbpath = u"E:\\Python\\src\\test.db"
+# dbpath = u"c:\\data\\Python\\src\\test.db"
+dbpath = u"E:\\Python\\src\\test.db"
 
 ## Initialize database
 db = e32db.Dbms()

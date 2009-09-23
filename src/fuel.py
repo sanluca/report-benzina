@@ -70,8 +70,7 @@ class Fuel( object ):
 		return self._iIsSaved
 
 	def getDate(self):
-		da = time.gmtime(self._iForm[0][2])
-		return strftime("%d/%m/%Y", da)
+		return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
 
 	def getPriceLiter(self):
 		return self._iForm[1][2]
