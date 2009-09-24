@@ -14,7 +14,9 @@ try:
 except:
 	db.create(dbpath)
 	db.open(dbpath)
-	try: sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date VARCHAR, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
+	try:
+		sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date VARCHAR, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE benzina (id COUNTER, data VARCHAR, prezzolitro FLOAT, euro FLOAT, pagato VARCHAR, achi VARCHAR, km FLOAT, altra VARCHAR)")
 	except: pass # gia creato
 db.close()
 
@@ -23,7 +25,7 @@ class _app:
 	def __init__(self):
 		self.lock = e32.Ao_lock()
 		self.list_box = None
-		appuifw.app.title = u"Py-Report"
+		appuifw.app.title = u"Report Benzina"
 		appuifw.app.screen="normal"
 		appuifw.note(u"Welcome to Py-Report")
 		self.lista = [u"Hours", u"Cabins", u"Fuel", u"Exit"]
