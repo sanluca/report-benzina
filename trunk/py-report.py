@@ -43,7 +43,7 @@ class _app:
 		res = self.list_box.current()
 		if res == 0:
 			import hours
-			hours.Hours()
+			hours.Hours(dbpath)
 		elif res == 1:
 			import cabins
 			cabins.Cabins()
