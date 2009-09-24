@@ -103,6 +103,7 @@ class Hours( object ):
 				db.open(self.dbpath)
 				db.execute(sql_string)
 			appuifw.note(u"Save to database.")
+			db.close()
 		appuifw.app.title = old_title
 
 	def view(self):
