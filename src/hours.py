@@ -39,7 +39,7 @@ class Hours( object ):
 		if res_hours == 0:
 			self.insert()
 		elif res_hours == 1:
-			appuifw.note(u"Be done!")
+			self.view()
 		elif res_hours == 2:
 			appuifw.note(u"Be done!")
 		elif res_hours == 3:
@@ -70,13 +70,13 @@ class Hours( object ):
 		return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
 
 	def getStartTime(self):
-		return float(self._iForm[1][2])
+		return self._iForm[1][2]
 
 	def getEndTime( self ):
-		return float(self._iForm[2][2])
+		return self._iForm[2][2]
 
 	def getLunch( self ):
-		return float(self._iForm[3][2])
+		return self._iForm[3][2]
 
 	def getAnother( self ):
 		return self._iForm[4][2]
