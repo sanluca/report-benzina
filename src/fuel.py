@@ -9,9 +9,11 @@ class Fuel( object ):
 	## The constructor.
 	def __init__(self, dbpath):
 		self.dbpath = dbpath
+		self.old_title = appuifw.app.title
 		self.old_quit = appuifw.app.exit_key_handler
 		self.old_body = appuifw.app.body
 		self.old_menu = appuifw.app.menu
+		appuifw.app.title = u"Fuel Menu"
 		db.open(self.dbpath)
 		self.list_fuel = [u"Insert", u"View", u"Config", u"Back"]
 		## Bool
@@ -23,6 +25,7 @@ class Fuel( object ):
 		appuifw.app.body = self.old_body
 		appuifw.app.menu = self.old_menu
 		appuifw.app.exit_key_handler = self.old_quit
+		appuifw.app.title = self.old_title
 	
 	def _initialize_fuel(self):
 		appuifw.app.menu = [(u"Select", self.select_fuel), (u"Back", self.back)]
@@ -57,7 +60,7 @@ class Fuel( object ):
 						 ( u"Another item", "text")]
 		## Mostro il form.
 		self._iIsSaved = False
-		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormEditModeOnly)
+		self._iForm = appuifw.Form(self._iFields, appuifw.FFormEditModeOnly)
 		self._iForm.save_hook = self._markSaved
 		self._iForm.execute( )
 
@@ -101,7 +104,8 @@ class Fuel( object ):
 		return strftime("%d/%m/%Y")
 
 	def insert(self):
-		appuifw.app.title = u"Fuel Log"
+		old_title = appuifw.app.title
+		appuifw.app.title = u"Add Fuel"
 		self.insertForm()
 		if self.isSaved():
 			# estraggo i dati che mi servono
@@ -120,6 +124,7 @@ class Fuel( object ):
 				db.execute(sql_string)
 			appuifw.note(u"Save to database.")
 			db.close()
+		appuifw.app.title = old_title
 
 	def view(self):
 		self.text = appuifw.Text()
