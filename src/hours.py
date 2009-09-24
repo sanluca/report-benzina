@@ -9,9 +9,11 @@ class Hours( object ):
 	## The constructor.
 	def __init__(self, dbpath):
 		self.dbpath = dbpath
+		self.old_title = appuifw.app.title
 		self.old_quit = appuifw.app.exit_key_handler
 		self.old_body = appuifw.app.body
 		self.old_menu = appuifw.app.menu
+		appuifw.app.title = u"Hours Menu"
 		db.open(self.dbpath)
 		self.list_hours = [u'Insert', u'View', u'Config']
 		## Bool
@@ -23,6 +25,7 @@ class Hours( object ):
 		appuifw.app.body = self.old_body
 		appuifw.app.menu = self.old_menu
 		appuifw.app.exit_key_handler = self.old_quit
+		appuifw.app.title = self.old_title
 
 	def _initialize_hours(self):
 		appuifw.app.menu = [(u"Select", self.select_hours), (u"Back", self.back)]
