@@ -96,7 +96,7 @@ class Hours( object ):
 			hourend = self.getEndTime()
 			lunch = self.getLunch()
 			another = self.getAnother()
-			sql_string = u"INSERT INTO hours (data, hourstart, hourend, lunch, another) VALUES ('%s', %f, %f, %f,'%s')" % ( date, hourstart, hourend, lunch, another )
+			sql_string = u"INSERT INTO hours (data, hourstart, hourend, lunch, another) VALUES ('%s', %d, %d, %f,'%s')" % ( date, hourstart, hourend, lunch, another )
 			try:
 				db.execute(sql_string)
 			except:
