@@ -116,7 +116,7 @@ class Fuel( object ):
 			who = self.getWho()
 			km = self.getKm()
 			another = self.getAnother()
-			sql_string = u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES ('%s',%f,%f,'%s','%s',%d,'%s')" %( date, priceLiter, euro, paid, who, km, another )
+			sql_string = u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES ('%s', %f, %f, '%s', '%s', %d, '%s')" %( date, priceLiter, euro, paid, who, km, another )
 			try:
 				db.execute(sql_string)
 			except:

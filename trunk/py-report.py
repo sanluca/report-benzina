@@ -16,7 +16,7 @@ except:
 	db.open(dbpath)
 	try:
 		sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date VARCHAR, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
-		sql_create = db.execute(u"CREATE TABLE benzina (id COUNTER, data VARCHAR, prezzolitro FLOAT, euro FLOAT, pagato VARCHAR, achi VARCHAR, km FLOAT, altra VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE hours (id COUNTER, data VARCHAR, hourstart FLOAT, hourend FLOAT, lunch FLOAT, another VARCHAR)")
 	except: pass # gia creato
 db.close()
 
