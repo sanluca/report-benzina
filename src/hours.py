@@ -31,7 +31,7 @@ class Hours( object ):
         self._place = [u'Home', u'Pordenone', u'Udine', u'Trieste', u'Milano', u'Padova']
 
         # create Form
-        self._iFields = [( u'Date', 'date'),
+        self._iFields = [( u'Date', 'date', time.time()),
                          ( u'Place of departure', 'combo', (self._place, 0)),
                          ( u'Km departure', 'float'),
                          ( u'Hour departure', 'time'),
@@ -45,7 +45,7 @@ class Hours( object ):
     ## Mostro il form.
     #def setActive( self ):
         self._iIsSaved = False
-        self._iForm = appuifw.Form(self._iFields, appuifw.FFormEditModeOnly)
+        self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormEditModeOnly)
         self._iForm.save_hook = self._markSaved
         self._iForm.execute( )
  
