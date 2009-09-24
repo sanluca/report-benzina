@@ -46,8 +46,6 @@ class Hours( object ):
 			self.back()
 
 	def setActive( self ):
-		# list cities
-		self._place = [u"Home", u"Pordenone", u"Udine", u"Trieste", u"Milano", u"Padova"]
 		# create Form
 		self._iFields = [( u"Date", "date", time.time()),
 						 ( u"Start Time", "time", time.time()),
@@ -98,7 +96,7 @@ class Hours( object ):
 			hourend = self.getEndTime()
 			lunch = self.getLunch()
 			another = self.getAnother()
-			sql_string = u"INSERT INTO fuel (data, hourstart, hourend, lunch, another) VALUES ('%s', %f, %f, %f,'%s')" % ( date, hourstart, hourend, lunch, another )
+			sql_string = u"INSERT INTO hours (data, hourstart, hourend, lunch, another) VALUES ('%s', %f, %f, %f,'%s')" % ( date, hourstart, hourend, lunch, another )
 			try:
 				db.execute(sql_string)
 			except:
@@ -106,3 +104,27 @@ class Hours( object ):
 				db.execute(sql_string)
 			appuifw.note(u"Save to database.")
 		appuifw.app.title = old_title
+
+	def view(self):
+		self.text = appuifw.Text()
+		sql_string = u"SELECT * FROM hours ORDER BY data DESC"
+		try: 
+			dbv.prepare(db,sql_string)
+		except:
+			db.open(self.dbpath)
+			dbv.prepare(db,sql_string)
+		rows = []
+		for i in range(1,dbv.count_line()+1): # 1 to number of rows
+			dbv.get_line() # grabs the current row
+			result = []
+			for l in range(1,dbv.col_count()+1):
+				try:
+					result.append( dbv.col(l) )
+				except:
+					result.append(None)
+			self.text.add(unicode(result) + u"\n")
+			rows.append(result[1])
+			dbv.next_line() # move to the next rowset
+		# print rows
+		appuifw.app.body = self.text
+		db.close()
