@@ -60,7 +60,7 @@ class Fuel( object ):
 						 ( u"Another item", "text")]
 		## Mostro il form.
 		self._iIsSaved = False
-		self._iForm = appuifw.Form(self._iFields, appuifw.FFormEditModeOnly)
+		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormEditModeOnly)
 		self._iForm.save_hook = self._markSaved
 		self._iForm.execute( )
 
