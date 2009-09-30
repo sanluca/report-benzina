@@ -16,8 +16,6 @@ class View( object ):
 		appuifw.app.title = u"Fuel View"
 		db.open(self.dbpath)
 		# self.list_fuel = []
-		## Bool
-		# self._iIsSaved = False
 		self._initialize_fuel()
 
 	def back(self):
@@ -91,6 +89,7 @@ class View( object ):
 			except:
 				db.open(self.dbpath)
 				db.execute(sql_string)
+			# db.execute(u"ALTER TABLE fuel AUTO_INCREMENT = 1")
 			appuifw.note(u"Deleted", "conf")
 			db.close()			
 		del globalui
