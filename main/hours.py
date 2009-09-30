@@ -2,6 +2,10 @@ import appuifw, time, os, sys, e32db, key_codes, e32
 from time import strftime
 from string import replace
 
+# this_path = "c:\\data\\Python\\view"
+this_path = "E:\\Python\\view"
+sys.path.append(this_path) 
+
 db = e32db.Dbms()
 dbv = e32db.Db_view()
 
@@ -129,7 +133,7 @@ class Hours( object ):
 		# print rows
 		appuifw.app.body = self.text
 		db.close()
+
 	def view(self):
 		import viewhours
-		viewhours.View(self.dbpath)
-
+		viewhours.View(self.dbpath)
