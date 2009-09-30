@@ -1,14 +1,14 @@
 import appuifw, e32, os, sys, e32db, key_codes
 
 # this_path = "c:\\data\\Python\\main"
-this_path = "E:\\Python\\main"
-sys.path.append(this_path) 
+main_path = "E:\\Python\\main"
+sys.path.append(main_path) 
 
 # this_path = "c:\\data\\Python\\view"
 this_path = "E:\\Python\\view"
 sys.path.append(this_path) 
 
-dbpath = u"%s\\test.db" % this_path
+dbpath = u"%s\\test.db" % main_path
 
 ## Initialize database
 db = e32db.Dbms()
@@ -18,8 +18,8 @@ except:
 	db.create(dbpath)
 	db.open(dbpath)
 	try:
-		sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date VARCHAR, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
-		sql_create = db.execute(u"CREATE TABLE hours (id COUNTER, data VARCHAR, hourstart FLOAT, hourend FLOAT, lunch FLOAT, another VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date FLOAT, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE hours (id COUNTER, date FLOAT, hourstart FLOAT, hourend FLOAT, lunch FLOAT, another VARCHAR)")
 	except: pass # gia creato
 db.close()
 
@@ -29,7 +29,7 @@ class _app:
 		self.lock = e32.Ao_lock()
 		self.list_box = None
 		appuifw.app.title = u"Report Benzina"
-		appuifw.app.screen="normal"
+		appuifw.app.screen = "normal"
 		appuifw.note(u"Welcome to Py-Report")
 		self.lista = [u"Hours", u"Cabins", u"Fuel", u"Exit"]
 		self._initialize_main_()

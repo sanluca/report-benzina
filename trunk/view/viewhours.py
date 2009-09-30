@@ -24,24 +24,6 @@ class View( object ):
 		appuifw.app.exit_key_handler = self.old_quit
 		appuifw.app.title = self.old_title
 
-	def __delete_field(self):
-		if not len(self.list_hours) > 0:
-			return
-		id = self.list_hours[self.list_box_hours.current()][0]
-		import globalui
-		if globalui.global_query(u"Delete ID: '%s'?" % id):
-			sql_string = u"DELETE FROM hours WHERE id=%d" % int(id)
-			try:
-				db.execute(sql_string)
-			except:
-				db.open(self.dbpath)
-				db.execute(sql_string)
-			# db.execute(u"ALTER TABLE hours AUTO_INCREMENT = 1")
-			appuifw.note(u"Deleted", "conf")
-			db.close()			
-		del globalui
-		self._initialize_hours()
-	
 	def _initialize_hours(self):
 		appuifw.app.menu = [(u"Select", self._select_hours), (u"Back", self.back)]
 		self.__create_list()
@@ -64,8 +46,8 @@ class View( object ):
 
 	def __show_form(self, lista):
 		old_title = appuifw.app.title
-		appuifw.app.title = u"ID: %s hours" % lista[0]
-		self._iFields = [( u"Date", "text", lista[1]),
+		appuifw.app.title = u"ID: %s Hours" % lista[0]
+		self._iFields = [( u"Date", "date", lista[1]),
 						 ( u"Start Time", "time", lista[2]),
 						 ( u"End Time", "time", lista[3]),
 						 ( u"Lunch (min)", "float", lista[4]),
@@ -94,9 +76,27 @@ class View( object ):
 		db.close()
 		del globalui
 
+	def __delete_field(self):
+		if not len(self.list_hours) > 0:
+			return
+		id = self.list_hours[self.list_box_hours.current()][0]
+		import globalui
+		if globalui.global_query(u"Delete ID: '%s'?" % id):
+			sql_string = u"DELETE FROM hours WHERE id=%d" % int(id)
+			try:
+				db.execute(sql_string)
+			except:
+				db.open(self.dbpath)
+				db.execute(sql_string)
+			# db.execute(u"ALTER TABLE hours AUTO_INCREMENT = 1")
+			appuifw.note(u"Deleted", "conf")
+			db.close()			
+		del globalui
+		self._initialize_hours()
+	
 	def __create_list(self):
 		self.list_hours = []
-		sql_string = u"SELECT * FROM hours ORDER BY data DESC"
+		sql_string = u"SELECT * FROM hours ORDER BY date DESC"
 		try: 
 			dbv.prepare(db, sql_string)
 		except:
@@ -110,6 +110,7 @@ class View( object ):
 					result.append( dbv.col(l) )
 				except:
 					result.append(None)
-			self.list_hours.append((result[0],result[1]))
+			# self.list_hours.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
+			self.list_hours.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
 			dbv.next_line()
 		db.close()

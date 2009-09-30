@@ -47,7 +47,7 @@ class View( object ):
 	def __show_form(self, lista):
 		old_title = appuifw.app.title
 		appuifw.app.title = u"ID: %s Fuel" % lista[0]
-		self._iFields = [( u"Date", "text", lista[1]),
+		self._iFields = [( u"Date", "date", lista[1]),
 						 ( u"Price for liter", "float", lista[2]),
 						 ( u"Euro", "float", lista[3]),
 						 ( u"Paid", "text", lista[4] ),
@@ -77,6 +77,7 @@ class View( object ):
 				globalui.global_msg_query( unicode(err), u"error" )
 		db.close()
 		del globalui
+
 	def __delete_field(self):
 		if not len(self.list_fuel) > 0:
 			return
@@ -108,9 +109,10 @@ class View( object ):
 			result = []
 			for l in range(1,dbv.col_count()+1):
 				try:
-					result.append( dbv.col(l) )
+					result.append(dbv.col(l))
 				except:
 					result.append(None)
-			self.list_fuel.append((result[0],result[1]))
+			# self.list_fuel.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
+			self.list_fuel.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
 			dbv.next_line()
 		db.close()
