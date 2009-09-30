@@ -1,11 +1,10 @@
 import appuifw, e32, os, sys, e32db, key_codes
 
-# this_path = "c:\\data\\Python\\src"
-this_path = "E:\\Python\\src"
+# this_path = "c:\\data\\Python\\main"
+this_path = "E:\\Python\\main"
 sys.path.append(this_path) 
 
-# dbpath = u"c:\\data\\Python\\src\\test.db"
-dbpath = u"E:\\Python\\src\\test.db"
+dbpath = u"%s\\test.db" % this_path
 
 ## Initialize database
 db = e32db.Dbms()
@@ -45,7 +44,7 @@ class _app:
 		res = self.list_box.current()
 		if res == 0:
 			import hours
-			hours.Hours(dbpath)
+			hours.Hours(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
 		elif res == 1:
 			import cabins
 			cabins.Cabins()

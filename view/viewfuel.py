@@ -29,20 +29,25 @@ class View( object ):
 	def _initialize_fuel(self):
 		appuifw.app.menu = [(u"Select", self._select_fuel), (u"Back", self.back)]
 		self.__create_list()
-		self.list_box_fuel = appuifw.Listbox(map(lambda x:x[1], self.list_fuel))
+		try:
+			self.list_box_fuel = appuifw.Listbox(map(lambda x:x[1], self.list_fuel))
+		except:
+			self.list_empty = []
+			self.list_empty.append(u"< Empty >")
+			self.list_box_fuel = appuifw.Listbox(map(lambda x:x, self.list_empty))
 		self.list_box_fuel.bind(key_codes.EKeySelect, self._select_fuel)
 		appuifw.app.body = self.list_box_fuel
 		appuifw.app.exit_key_handler = self.back
 
 	def _select_fuel(self):
-		id = self.list_box_fuel.current()
-		# appuifw.note(u"ID: %s\nData: %s" % (self.list_fuel[id][0], self.list_fuel[id][1]) )
-		self.__get_info(self.list_fuel[id][0])
-		self.__show_form(self.info_selection)
+		if len(self.list_fuel) > 0:
+			id = self.list_box_fuel.current()
+			self.__get_info(self.list_fuel[id][0])
+			self.__show_form(self.info_selection)
 
 	def __show_form(self, lista):
 		old_title = appuifw.app.title
-		appuifw.app.title = u"Add Fuel"
+		appuifw.app.title = u"ID: %s Fuel" % lista[0]
 		self._iFields = [( u"Date", "text", lista[1]),
 						 ( u"Price for liter", "float", lista[2]),
 						 ( u"Euro", "float", lista[3]),
@@ -58,7 +63,7 @@ class View( object ):
 	def __get_info(self, id):
 		import globalui
 		sql_string = u"SELECT * FROM fuel WHERE id=%d" % int(id)
-		globalui.global_msg_query( sql_string, u"SQL" )
+		globalui.global_msg_query( sql_string, u"SQL Debug" )
 		self.info_selection = []
 		try: 
 			dbv.prepare(db, sql_string)
