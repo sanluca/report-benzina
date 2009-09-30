@@ -15,7 +15,7 @@ class Hours( object ):
 		self.old_menu = appuifw.app.menu
 		appuifw.app.title = u"Hours Menu"
 		db.open(self.dbpath)
-		self.list_hours = [u"Insert", u"View", u"Config"]
+		self.list_hours = [u"Insert", u"View", u"Config", u"Back"]
 		## Bool
 		self._iIsSaved = False
 		# self.res_hours = appuifw.selection_list(self.list_hours)

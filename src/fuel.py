@@ -2,6 +2,10 @@ import appuifw, time, os, sys, e32db, key_codes, e32
 from time import strftime
 from string import replace
 
+# this_path = "c:\\data\\Python\\view"
+this_path = "E:\\Python\\view"
+sys.path.append(this_path) 
+
 db = e32db.Dbms()
 dbv = e32db.Db_view()
 
@@ -127,25 +131,5 @@ class Fuel( object ):
 		appuifw.app.title = old_title
 
 	def view(self):
-		self.text = appuifw.Text()
-		sql_string = u"SELECT * FROM fuel ORDER BY date DESC"
-		try: 
-			dbv.prepare(db,sql_string)
-		except:
-			db.open(self.dbpath)
-			dbv.prepare(db,sql_string)
-		rows = []
-		for i in range(1,dbv.count_line()+1): # 1 to number of rows
-			dbv.get_line() # grabs the current row
-			result = []
-			for l in range(1,dbv.col_count()+1):
-				try:
-					result.append( dbv.col(l) )
-				except:
-					result.append(None)
-			self.text.add(unicode(result) + u"\n")
-			rows.append(result[1])
-			dbv.next_line() # move to the next rowset
-		# print rows
-		appuifw.app.body = self.text
-		db.close()
+		import viewfuel
+		viewfuel.View(self.dbpath)
