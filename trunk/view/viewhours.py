@@ -16,8 +16,6 @@ class View( object ):
 		appuifw.app.title = u"Hours View"
 		db.open(self.dbpath)
 		# self.list_hours = []
-		## Bool
-		# self._iIsSaved = False
 		self._initialize_hours()
 
 	def back(self):
@@ -38,6 +36,7 @@ class View( object ):
 			except:
 				db.open(self.dbpath)
 				db.execute(sql_string)
+			# db.execute(u"ALTER TABLE hours AUTO_INCREMENT = 1")
 			appuifw.note(u"Deleted", "conf")
 			db.close()			
 		del globalui
