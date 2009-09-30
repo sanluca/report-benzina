@@ -53,11 +53,11 @@ class Fuel( object ):
 		# list of payment types
 		self._payments = [u"Cash", u"Bancomat", u"Credit card", u"Check", u"Payable"]
 		# elenco fornitori 
-		self._suppliers=[u"Esso", u"Agip", u"Shell"]
+		self._suppliers=[u"Esso", u"Agip", u"Shell", u"Q8", u"IP", u"Erg", u"API", u"Tamoil", u"Total"]
 		# creazione Form
 		self._iFields = [( u"Date", "date", time.time()),
-						 ( u"Price for liter", "float"),
-						 ( u"Euro", "float"),
+						 ( u"Price for liter", "float", 0),
+						 ( u"Euro", "float", 0),
 						 ( u"Paid", "combo", ( self._payments, 0 ) ),
 						 ( u"Who", "combo", ( self._suppliers, 0 ) ),
 						 ( u"Km", "number"),
