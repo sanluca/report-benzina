@@ -15,7 +15,7 @@ class View( object ):
 		self.old_menu = appuifw.app.menu
 		appuifw.app.title = u"Fuel View"
 		db.open(self.dbpath)
-		self.list_fuel = []
+		# self.list_fuel = []
 		## Bool
 		# self._iIsSaved = False
 		self._initialize_fuel()
@@ -36,6 +36,7 @@ class View( object ):
 			self.list_empty.append(u"< Empty >")
 			self.list_box_fuel = appuifw.Listbox(map(lambda x:x, self.list_empty))
 		self.list_box_fuel.bind(key_codes.EKeySelect, self._select_fuel)
+		self.list_box_fuel.bind(key_codes.EKeyBackspace, self.__delete_field)
 		appuifw.app.body = self.list_box_fuel
 		appuifw.app.exit_key_handler = self.back
 
@@ -77,7 +78,26 @@ class View( object ):
 			except Exception, err:
 				globalui.global_msg_query( unicode(err), u"error" )
 		db.close()
+		del globalui
+	def __delete_field(self):
+		if not len(self.list_fuel) > 0:
+			return
+		id = self.list_fuel[self.list_box_fuel.current()][0]
+		import globalui
+		if globalui.global_query(u"Delete ID: '%s'?" % id):
+			sql_string = u"DELETE FROM fuel WHERE id=%d" % int(id)
+			try:
+				db.execute(sql_string)
+			except:
+				db.open(self.dbpath)
+				db.execute(sql_string)
+			appuifw.note(u"Deleted", "conf")
+			db.close()			
+		del globalui
+		self._initialize_fuel()
+	
 	def __create_list(self):
+		self.list_fuel = []
 		sql_string = u"SELECT * FROM fuel ORDER BY date DESC"
 		try: 
 			dbv.prepare(db, sql_string)

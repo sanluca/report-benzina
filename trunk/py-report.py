@@ -4,6 +4,10 @@ import appuifw, e32, os, sys, e32db, key_codes
 this_path = "E:\\Python\\main"
 sys.path.append(this_path) 
 
+# this_path = "c:\\data\\Python\\view"
+this_path = "E:\\Python\\view"
+sys.path.append(this_path) 
+
 dbpath = u"%s\\test.db" % this_path
 
 ## Initialize database

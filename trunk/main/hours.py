@@ -106,7 +106,7 @@ class Hours( object ):
 			db.close()
 		appuifw.app.title = old_title
 
-	def view(self):
+	def view2(self):
 		self.text = appuifw.Text()
 		sql_string = u"SELECT * FROM hours ORDER BY data DESC"
 		try: 
@@ -129,3 +129,7 @@ class Hours( object ):
 		# print rows
 		appuifw.app.body = self.text
 		db.close()
+	def view(self):
+		import viewhours
+		viewhours.View(self.dbpath)
+
