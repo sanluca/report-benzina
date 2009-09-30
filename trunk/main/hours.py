@@ -50,7 +50,7 @@ class Hours( object ):
 		self._iFields = [( u"Date", "date", time.time()),
 						 ( u"Start Time", "time", time.time()),
 						 ( u"End Time", "time", time.time()),
-						 ( u"Lunch (min)", "float", 0),
+						 ( u"Lunch (min)", "float", 0.0),
 						 ( u"Another item", "text")]
 		## Mostro il form.
 		self._iIsSaved = False
