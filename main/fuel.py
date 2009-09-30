@@ -56,8 +56,8 @@ class Fuel( object ):
 		self._suppliers=[u"Esso", u"Agip", u"Shell", u"Q8", u"IP", u"Erg", u"API", u"Tamoil", u"Total"]
 		# creazione Form
 		self._iFields = [( u"Date", "date", time.time()),
-						 ( u"Price for liter", "float", 0),
-						 ( u"Euro", "float", 0),
+						 ( u"Price for liter", "float", 0.0),
+						 ( u"Euro", "float", 0.0),
 						 ( u"Paid", "combo", ( self._payments, 0 ) ),
 						 ( u"Who", "combo", ( self._suppliers, 0 ) ),
 						 ( u"Km", "number"),
