@@ -77,7 +77,8 @@ class Fuel( object ):
 		return self._iIsSaved
 
 	def getDate(self):
-		return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
+		# return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
+		return self._iForm[0][2]
 
 	def getPriceLiter(self):
 		return self._iForm[1][2]
@@ -120,13 +121,13 @@ class Fuel( object ):
 			who = self.getWho()
 			km = self.getKm()
 			another = self.getAnother()
-			sql_string = u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES ('%s', %f, %f, '%s', '%s', %d, '%s')" %( date, priceLiter, euro, paid, who, km, another )
+			sql_string = u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s')" %( date, priceLiter, euro, paid, who, km, another )
 			try:
 				db.execute(sql_string)
 			except:
 				db.open(self.dbpath)
 				db.execute(sql_string)
-			appuifw.note(u"Save to database.")
+			appuifw.note(u"Saved", "conf")
 			db.close()
 		appuifw.app.title = old_title
 
