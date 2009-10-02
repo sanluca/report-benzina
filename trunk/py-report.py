@@ -1,12 +1,12 @@
 import appuifw, e32, os, sys, e32db, key_codes
 
-# this_path = "c:\\data\\Python\\main"
+# main_path = "c:\\data\\Python\\main"
 main_path = "E:\\Python\\main"
-sys.path.append(main_path) 
+sys.path.append(main_path)
 
-# this_path = "c:\\data\\Python\\view"
-this_path = "E:\\Python\\view"
-sys.path.append(this_path) 
+# view_path = "c:\\data\\Python\\view"
+view_path = "E:\\Python\\view"
+sys.path.append(view_path)
 
 dbpath = u"%s\\test.db" % main_path
 
