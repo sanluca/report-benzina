@@ -25,7 +25,7 @@ class View( object ):
 		appuifw.app.title = self.old_title
 
 	def _initialize_hours(self):
-		appuifw.app.menu = [(u"Select", self._select_hours), (u"Back", self.back)]
+		appuifw.app.menu = [(u"Select", self._select_hours), (u"Delete", self.__delete_field), (u"Back", self.back)]
 		self.__create_list()
 		try:
 			self.list_box_hours = appuifw.Listbox(map(lambda x:x[1], self.list_hours))
