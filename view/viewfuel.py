@@ -25,7 +25,7 @@ class View( object ):
 		appuifw.app.title = self.old_title
 	
 	def _initialize_fuel(self):
-		appuifw.app.menu = [(u"Select", self._select_fuel), (u"Back", self.back)]
+		appuifw.app.menu = [(u"Select", self._select_fuel), (u"Delete", self.__delete_field), (u"Back", self.back)]
 		self.__create_list()
 		try:
 			self.list_box_fuel = appuifw.Listbox(map(lambda x:x[1], self.list_fuel))
