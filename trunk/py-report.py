@@ -20,6 +20,11 @@ except:
 	try:
 		sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date FLOAT, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
 		sql_create = db.execute(u"CREATE TABLE hours (id COUNTER, date FLOAT, hourstart FLOAT, hourend FLOAT, lunch FLOAT, another VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE cabine (id COUNTER, nome VARCHAR, regione VARCHAR, provincia VARCHAR, indirizzo VARCHAR, strumento VARCHAR, note VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE strumenti (id COUNTER, nome VARCHAR, cabina VARCHAR, note VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE ticket (id COUNTER, date FLOAT, nome VARCHAR, cabina VARCHAR, note VARCHAR)")
+
+
 	except: pass # gia creato
 db.close()
 
@@ -51,7 +56,7 @@ class _app:
 			hours.Hours(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
 		elif res == 1:
 			import cabins
-			cabins.Cabins()
+			cabins.Cabins(dbpath)
 		elif res == 2:
 			import fuel
 			fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
