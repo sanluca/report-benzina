@@ -13,13 +13,14 @@ class Fuel( object ):
 	## The constructor.
 	def __init__(self, dbpath):
 		self.dbpath = dbpath
+		self.sqlpath = "%s.fuel.sql" % self.dbpath
 		self.old_title = appuifw.app.title
 		self.old_quit = appuifw.app.exit_key_handler
 		self.old_body = appuifw.app.body
 		self.old_menu = appuifw.app.menu
 		appuifw.app.title = u"Fuel Menu"
 		db.open(self.dbpath)
-		self.list_fuel = [u"Insert", u"View", u"Config", u"Back"]
+		self.list_fuel = [u"Insert", u"View", u"Export", u"Back"]
 		## Bool
 		self._iIsSaved = False
 		# self.res_fuel = appuifw.selection_list(self.list_fuel)
@@ -45,9 +46,25 @@ class Fuel( object ):
 		elif res_fuel == 1:
 			self.view()
 		elif res_fuel == 2:
-			appuifw.note(u"Be done!")
+			self.export()
 		elif res_fuel == 3:
 			self.back()
+
+	def export( self ):
+		sql_string = u"INSERT INTO fuel (id, date, priceLiter, euro, paid, who, km, another) VALUES (%d, %d, %f, %f, '%s', '%s', %d, '%s');\n"
+		db.open(self.dbpath)
+		if os.path.exists(self.sqlpath):
+			os.remove(self.sqlpath)
+		file = open(self.sqlpath, 'a')
+		file.write(unicode("DROP TABLE IF EXISTS fuel;\nCREATE TABLE IF NOT EXISTS fuel (id INT, date DOUBLE, priceLiter FLOAT, euro FLOAT, paid VARCHAR(255), who VARCHAR(255), km FLOAT, another VARCHAR(255), PRIMARY KEY (id));\n"))
+		dbv.prepare(db, unicode("SELECT * FROM fuel"))
+		for i in range(1, dbv.count_line()+1):
+			dbv.get_line()
+			file.write(sql_string % ( dbv.col(1), dbv.col(2), dbv.col(3), dbv.col(4), dbv.col(5), dbv.col(6), dbv.col(7), dbv.col(8) ))
+			dbv.next_line()
+		file.close()
+		db.close()
+		appuifw.note(u"Saved in %s" % self.sqlpath, "conf")
 
 	def insertForm( self ):
 		# list of payment types

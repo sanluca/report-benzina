@@ -13,13 +13,14 @@ class Hours( object ):
 	## The constructor.
 	def __init__(self, dbpath):
 		self.dbpath = dbpath
+		self.sqlpath = "%s.hours.sql" % self.dbpath
 		self.old_title = appuifw.app.title
 		self.old_quit = appuifw.app.exit_key_handler
 		self.old_body = appuifw.app.body
 		self.old_menu = appuifw.app.menu
 		appuifw.app.title = u"Hours Menu"
 		db.open(self.dbpath)
-		self.list_hours = [u"Insert", u"View", u"Config", u"Back"]
+		self.list_hours = [u"Insert", u"View", u"Export", u"Back"]
 		## Bool
 		self._iIsSaved = False
 		# self.res_hours = appuifw.selection_list(self.list_hours)
@@ -45,9 +46,25 @@ class Hours( object ):
 		elif res_hours == 1:
 			self.view()
 		elif res_hours == 2:
-			appuifw.note(u"Be done!")
+			self.export()
 		elif res_hours == 3:
 			self.back()
+
+	def export( self ):
+		sql_string = u"INSERT INTO hours (id, date, hourstart, hourend, lunch, another) VALUES (%d, %d, %d, %d, %f,'%s');\n"
+		db.open(self.dbpath)
+		if os.path.exists(self.sqlpath):
+			os.remove(self.sqlpath)
+		file = open(self.sqlpath, 'a')
+		file.write(unicode("DROP TABLE IF EXISTS hours;\nCREATE TABLE IF NOT EXISTS hours (id INT, date DOUBLE, hourstart INT, hourend INT, lunch FLOAT, another VARCHAR(255), PRIMARY KEY (id));\n"))
+		dbv.prepare(db, unicode("SELECT * FROM hours"))
+		for i in range(1, dbv.count_line()+1):
+			dbv.get_line()
+			file.write(sql_string % ( dbv.col(1), dbv.col(2), dbv.col(3), dbv.col(4), dbv.col(5), dbv.col(6) ))
+			dbv.next_line()
+		file.close()
+		db.close()
+		appuifw.note(u"Saved in %s" % self.sqlpath, "conf")
 
 	def setActive( self ):
 		# create Form
