@@ -33,7 +33,7 @@ class Buy( object ):
 		appuifw.app.title = self.old_title
 	
 	def _initialize_buy(self):
-		appuifw.app.menu = [(u"Select", self.select_fuel), (u"Back", self.back)]
+		appuifw.app.menu = [(u"Select", self.select_buy), (u"Back", self.back)]
 		self.list_box_buy = appuifw.Listbox(map(lambda x:x, self.list_buy))
 		self.list_box_buy.bind(key_codes.EKeySelect, self.select_buy)
 		appuifw.app.body = self.list_box_buy
