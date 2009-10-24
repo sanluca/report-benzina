@@ -62,7 +62,8 @@ class _app:
 			import fuel
 			fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
 		elif res == 3:
-			pass
+			import buy
+			buy.Buy(dbpath)
 		elif res == 4:
 			self.exit()
 
