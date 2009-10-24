@@ -23,6 +23,7 @@ except:
 		sql_create = db.execute(u"CREATE TABLE cabine (id COUNTER, nome VARCHAR, regione VARCHAR, provincia VARCHAR, indirizzo VARCHAR, strumento VARCHAR, note VARCHAR)")
 		sql_create = db.execute(u"CREATE TABLE strumenti (id COUNTER, nome VARCHAR, cabina VARCHAR, note VARCHAR)")
 		sql_create = db.execute(u"CREATE TABLE ticket (id COUNTER, date FLOAT, nome VARCHAR, cabina VARCHAR, note VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE buy (id COUNTER, date FLOAT, shop VARCHAR, type VARCHAR, paid VARCHAR, price FLOAT, another VARCHAR)")
 
 
 	except: pass # gia creato
@@ -36,7 +37,7 @@ class _app:
 		appuifw.app.title = u"Report Benzina"
 		appuifw.app.screen = "normal"
 		appuifw.note(u"Welcome to Py-Report")
-		self.lista = [u"Hours", u"Cabins", u"Fuel", u"Exit"]
+		self.lista = [u"Hours", u"Cabins", u"Fuel", u"Buy", u"Exit"]
 		self._initialize_main_()
 
 	def _initialize_main_(self):
@@ -61,6 +62,8 @@ class _app:
 			import fuel
 			fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
 		elif res == 3:
+			pass
+		elif res == 4:
 			self.exit()
 
 	def exit(self):
