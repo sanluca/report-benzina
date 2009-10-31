@@ -70,7 +70,7 @@ class Buy( object ):
 		# list of payment types
 		self._payments = [u"Cash", u"Bancomat", u"Credit card", u"Check", u"Payable"]
 		# elenco fornitori 
-		self._suppliers=[u"Market", u"Despar", u"Coop", u"Visotto", u"Pam"]
+		self._suppliers=[u"Market", u"Despar", u"Coop", u"Visotto", u"Pam", u"Altro"]
 		# creazione Form
 		self._iFields = [( u"Date", "date", time.time()),
 						 ( u"Shop", "combo", (self._suppliers, 0)),
