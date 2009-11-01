@@ -48,6 +48,9 @@ class View( object ):
 	def __show_form(self, lista, lista1):
 		
 		percorsi = lista[6]-lista1[6]
+		litri_serbatoio = lista[3] / lista[2]
+		media_km = percorsi / litri_serbatoio
+		
 		old_title = appuifw.app.title
 		appuifw.app.title = u"ID: %s Fuel" % lista[0]
 		self._iFields = [( u"Date", "date", lista[1]),
@@ -57,7 +60,9 @@ class View( object ):
 						 ( u"Who", "text", lista[5] ),
 						 ( u"Km", "number", lista[6] ),
 						 ( u"Another item", "text", lista[7]),
-		                 ( u"Km percorsi", "number", percorsi)]
+		                 ( u"Km percorsi", "number", percorsi),
+		                 ( u"Litri Serbatoio", "number", litri_serbatoio),
+		                 ( u"Media Km", "number", media_km)]
 		                 
 		## Mostro il form.
 		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormViewModeOnly)

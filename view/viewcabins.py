@@ -13,10 +13,10 @@ class View( object ):
 		self.old_quit = appuifw.app.exit_key_handler
 		self.old_body = appuifw.app.body
 		self.old_menu = appuifw.app.menu
-		appuifw.app.title = u"Buy View"
+		appuifw.app.title = u"Cabins View"
 		db.open(self.dbpath)
 		# self.list_fuel = []
-		self._initialize_buy()
+		self._initialize_cabins()
 
 	def back(self):
 		appuifw.app.body = self.old_body
@@ -24,35 +24,33 @@ class View( object ):
 		appuifw.app.exit_key_handler = self.old_quit
 		appuifw.app.title = self.old_title
 	
-	def _initialize_buy(self):
-		appuifw.app.menu = [(u"Select", self._select_buy), (u"Delete", self.__delete_field), (u"Back", self.back)]
+	def _initialize_cabins(self):
+		appuifw.app.menu = [(u"Select", self._select_cabins), (u"Delete", self.__delete_field), (u"Back", self.back)]
 		self.__create_list()
 		try:
-			self.list_box_buy = appuifw.Listbox(map(lambda x:x[1], self.list_buy))
+			self.list_box_cabins = appuifw.Listbox(map(lambda x:x[1], self.list_buy))
 		except:
 			self.list_empty = []
 			self.list_empty.append(u"< Empty >")
-			self.list_box_buy = appuifw.Listbox(map(lambda x:x, self.list_empty))
-		self.list_box_buy.bind(key_codes.EKeySelect, self._select_buy)
-		self.list_box_buy.bind(key_codes.EKeyBackspace, self.__delete_field)
-		appuifw.app.body = self.list_box_buy
+			self.list_box_cabins = appuifw.Listbox(map(lambda x:x, self.list_empty))
+		self.list_box_cabins.bind(key_codes.EKeySelect, self._select_cabins)
+		self.list_box_cabins.bind(key_codes.EKeyBackspace, self.__delete_field)
+		appuifw.app.body = self.list_box_cabins
 		appuifw.app.exit_key_handler = self.back
 
-	def _select_buy(self):
-		if len(self.list_buy) > 0:
-			id = self.list_box_buy.current()
-			self.__get_info(self.list_buy[id][0])
+	def _select_cabins(self):
+		if len(self.list_cabins) > 0:
+			id = self.list_box_cabins.current()
+			self.__get_info(self.list_cabins[id][0])
 			self.__show_form(self.info_selection)
 
 	def __show_form(self, lista):
 		old_title = appuifw.app.title
-		appuifw.app.title = u"ID: %s Buy" % lista[0]
-		self._iFields = [( u"Date", "date", lista[1]),
-						 ( u"Shop", "text", lista[2]),
-						 ( u"Type", "text", lista[3]),
-						 ( u"Paid", "text", lista[4] ),
-						 ( u"Price", "text", lista[5] ),
-						 ( u"Another item", "text", lista[6])]
+		appuifw.app.title = u"ID: %s Cabins" % lista[0]
+		self._iFields = [( u"Nome", "text", lista[1]),
+						 ( u"Regione", "Provincia", lista[2]),
+						 ( u"Indirizzo", "text", lista[3]),
+						 ( u"Note", "text", lista[4] )]
 		                 
 		## Mostro il form.
 		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormViewModeOnly)
@@ -61,7 +59,7 @@ class View( object ):
 
 	def __get_info(self, id):
 		import globalui
-		sql_string = u"SELECT * FROM buy WHERE id=%d" % int(id)
+		sql_string = u"SELECT * FROM cabine WHERE id=%d" % int(id)
 		globalui.global_msg_query( sql_string, u"SQL Debug" )
 		self.info_selection = []
 		
@@ -80,12 +78,12 @@ class View( object ):
 		del globalui
 
 	def __delete_field(self):
-		if not len(self.list_buy) > 0:
+		if not len(self.list_cabins) > 0:
 			return
-		id = self.list_buy[self.list_box_buy.current()][0]
+		id = self.list_cabins[self.list_box_cabins.current()][0]
 		import globalui
 		if globalui.global_query(u"Delete ID: '%s'?" % id):
-			sql_string = u"DELETE FROM buy WHERE id=%d" % int(id)
+			sql_string = u"DELETE FROM cabine WHERE id=%d" % int(id)
 			try:
 				db.execute(sql_string)
 			except:
@@ -95,11 +93,11 @@ class View( object ):
 			appuifw.note(u"Deleted", "conf")
 			db.close()			
 		del globalui
-		self._initialize_buy()
+		self._initialize_cabins()
 	
 	def __create_list(self):
-		self.list_buy = []
-		sql_string = u"SELECT * FROM buy ORDER BY date DESC"
+		self.list_cabins = []
+		sql_string = u"SELECT * FROM cabine"
 		try: 
 			dbv.prepare(db, sql_string)
 		except:
@@ -114,6 +112,6 @@ class View( object ):
 				except:
 					result.append(None)
 			# self.list_fuel.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
-			self.list_buy.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
+			self.list_cabins.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
 			dbv.next_line()
 		db.close()

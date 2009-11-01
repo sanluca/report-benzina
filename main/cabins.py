@@ -51,7 +51,7 @@ class Cabins( object ):
         elif res_cabins == 2:
             self.insert_interventi()
         elif res_cabins == 3:
-            appuifw.note(u"Be done!")
+            self.view()
         elif res_cabins == 4:
             appuifw.note(u"Be done!")
         elif res_cabins == 5:
@@ -208,7 +208,6 @@ class Cabins( object ):
         appuifw.app.title = old_title
 
     def view(self):
-        pass
-       # import viewhours
-      #  viewhours.View(self.dbpath)
+        import viewcabins
+        viewcabins.View(self.dbpath)
 
