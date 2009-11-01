@@ -51,7 +51,8 @@ class View( object ):
 						 ( u"Start Time", "time", lista[2]),
 						 ( u"End Time", "time", lista[3]),
 						 ( u"Lunch (min)", "float", lista[4]),
-						 ( u"Another item", "text", lista[5])]
+						 ( u"km", "float", lista[5]),
+						 ( u"Another item", "text", lista[6])]
 		## Mostro il form.
 		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormViewModeOnly)
 		self._iForm.execute()

@@ -51,12 +51,12 @@ class Hours( object ):
 			self.back()
 
 	def export( self ):
-		sql_string = u"INSERT INTO hours (id, date, hourstart, hourend, lunch, another) VALUES (%d, %d, %d, %d, %f,'%s');\n"
+		sql_string = u"INSERT INTO hours (id, date, hourstart, hourend, lunch, km, another) VALUES (%d, %d, %d, %d, %f, %d, '%s');\n"
 		db.open(self.dbpath)
 		if os.path.exists(self.sqlpath):
 			os.remove(self.sqlpath)
 		file = open(self.sqlpath, 'a')
-		file.write(unicode("DROP TABLE IF EXISTS hours;\nCREATE TABLE IF NOT EXISTS hours (id INT, date DOUBLE, hourstart INT, hourend INT, lunch FLOAT, another VARCHAR(255), PRIMARY KEY (id));\n"))
+		file.write(unicode("DROP TABLE IF EXISTS hours;\nCREATE TABLE IF NOT EXISTS hours (id INT, date DOUBLE, hourstart INT, hourend INT, lunch FLOAT, km FLOAT, another VARCHAR(255), PRIMARY KEY (id));\n"))
 		dbv.prepare(db, unicode("SELECT * FROM hours"))
 		for i in range(1, dbv.count_line()+1):
 			dbv.get_line()
@@ -72,6 +72,7 @@ class Hours( object ):
 						 ( u"Start Time", "time", time.time()),
 						 ( u"End Time", "time", time.time()),
 						 ( u"Lunch (min)", "float", 0.0),
+						 ( u"Km", "float"),
 						 ( u"Another item", "text")]
 		## Mostro il form.
 		self._iIsSaved = False
@@ -99,9 +100,12 @@ class Hours( object ):
 
 	def getLunch( self ):
 		return self._iForm[3][2]
+	
+	def getKm( self ):
+		return self._iForm[4][2]
 
 	def getAnother( self ):
-		return self._iForm[4][2]
+		return self._iForm[5][2]
 
 	## Return date field value.
 	def getDay( self ):
@@ -117,8 +121,9 @@ class Hours( object ):
 			hourstart = self.getStartTime()
 			hourend = self.getEndTime()
 			lunch = self.getLunch()
+			km = self.getKm()
 			another = self.getAnother()
-			sql_string = u"INSERT INTO hours (date, hourstart, hourend, lunch, another) VALUES (%d, %d, %d, %f,'%s')" % ( date, hourstart, hourend, lunch, another )
+			sql_string = u"INSERT INTO hours (date, hourstart, hourend, lunch, km, another) VALUES (%d, %d, %d, %f,%d, '%s')" % ( date, hourstart, hourend, lunch, km, another )
 			try:
 				db.execute(sql_string)
 			except:

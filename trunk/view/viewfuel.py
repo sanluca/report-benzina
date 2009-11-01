@@ -47,7 +47,6 @@ class View( object ):
 			
 	def __show_form(self, lista, lista1):
 		
-		print lista1
 		percorsi = lista[6]-lista1[6]
 		old_title = appuifw.app.title
 		appuifw.app.title = u"ID: %s Fuel" % lista[0]
@@ -105,7 +104,7 @@ class View( object ):
 		dbv.get_line()
 		for l in range(1, dbv.col_count()+1):
 			try:
-				self.info_selection.append(dbv.col(l))
+				self.info_selection_prec.append(dbv.col(l))
 			except Exception, err:
 				globalui.global_msg_query( unicode(err), u"error" )
 		db.close()

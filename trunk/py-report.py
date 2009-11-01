@@ -19,7 +19,7 @@ except:
 	db.open(dbpath)
 	try:
 		sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date FLOAT, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
-		sql_create = db.execute(u"CREATE TABLE hours (id COUNTER, date FLOAT, hourstart FLOAT, hourend FLOAT, lunch FLOAT, another VARCHAR)")
+		sql_create = db.execute(u"CREATE TABLE hours (id COUNTER, date FLOAT, hourstart FLOAT, hourend FLOAT, lunch FLOAT, km FLOAT, another VARCHAR)")
 		sql_create = db.execute(u"CREATE TABLE cabine (id COUNTER, nome VARCHAR, regione VARCHAR, provincia VARCHAR, indirizzo VARCHAR, note VARCHAR)")
 		sql_create = db.execute(u"CREATE TABLE strumenti (id COUNTER, nome VARCHAR, cabina VARCHAR, note VARCHAR)")
 		sql_create = db.execute(u"CREATE TABLE interventi (id COUNTER, date FLOAT, cabina VARCHAR, strumento VARCHAR, note VARCHAR)")
