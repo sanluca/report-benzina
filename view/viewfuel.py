@@ -43,9 +43,12 @@ class View( object ):
 			id = self.list_box_fuel.current()
 			self.__get_info(self.list_fuel[id][0])
 			self.__get_info_prec(self.list_fuel[id][0])
-			self.__show_form(self.info_selection,self.info_selection_prec)
-
+			self.__show_form(self.info_selection, self.info_selection_prec)
+			
 	def __show_form(self, lista, lista1):
+		
+		print lista1
+		percorsi = lista[6]-lista1[6]
 		old_title = appuifw.app.title
 		appuifw.app.title = u"ID: %s Fuel" % lista[0]
 		self._iFields = [( u"Date", "date", lista[1]),
@@ -54,8 +57,8 @@ class View( object ):
 						 ( u"Paid", "text", lista[4] ),
 						 ( u"Who", "text", lista[5] ),
 						 ( u"Km", "number", lista[6] ),
-						 ( u"Another item", "text", lista[7])]
-		               #  ( u"Km percorsi", "text", (lista1[6] - lista[6]))]
+						 ( u"Another item", "text", lista[7]),
+		                 ( u"Km percorsi", "number", percorsi)]
 		                 
 		## Mostro il form.
 		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormViewModeOnly)
@@ -85,10 +88,15 @@ class View( object ):
 	def __get_info_prec(self, id):
 		import globalui
 		#prendo i km precedenti
-		sql_string = u"SELECT * FROM fuel WHERE id=%d" % int(id-1)
-		globalui.global_msg_query( sql_string, u"SQL Debug" )
-		self.info_selection_prec = []
-		
+		if id >= 1:
+			sql_string = u"SELECT * FROM fuel WHERE id=%d" % int(id-1)
+			globalui.global_msg_query( sql_string, u"SQL Debug" )
+			self.info_selection_prec = []
+		else:
+			sql_string = u"SELECT * FROM fuel WHERE id=%d" % int(id)
+			globalui.global_msg_query( sql_string, u"SQL Debug" )
+			self.info_selection_prec = []
+
 		try: 
 			dbv.prepare(db, sql_string)
 		except:
