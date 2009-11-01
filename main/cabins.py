@@ -156,7 +156,7 @@ class Cabins( object ):
           #  strumento = self.getStrumento()
             note = self.getNote()
             #sql_string = u"INSERT INTO hours (date, hourstart, hourend, lunch, another) VALUES (%d, %d, %d, %f,'%s')" % ( date, hourstart, hourend, lunch, another )
-            sql_string = u"INSERT INTO cabine (nome, regione, provincia, indirizzo, note) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (nome, regione, provincia, indirizzo, note)
+            sql_string = u"INSERT INTO cabine (nome, regione, provincia, indirizzo, note) VALUES ('%s', '%s', '%s', '%s', '%s')" % (nome, regione, provincia, indirizzo, note)
             try:
                 db.execute(sql_string)
             except:
@@ -197,7 +197,7 @@ class Cabins( object ):
             cabina = self.getCabinaInterventi()
             strumento = self.getStrumentoInterventi()
             note = self.getNoteInterventi()
-            sql_string = u"INSERT INTO interventi (date, cabina, strumento, note) VALUES ('%s', '%s', '%s', '%s')" % (date, cabina, strumento, note)
+            sql_string = u"INSERT INTO interventi (date, cabina, strumento, note) VALUES (%d, '%s', '%s', '%s')" % (date, cabina, strumento, note)
             try:
                 db.execute(sql_string)
             except:
