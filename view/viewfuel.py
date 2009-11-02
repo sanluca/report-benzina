@@ -25,7 +25,7 @@ class View( object ):
 		appuifw.app.title = self.old_title
 	
 	def _initialize_fuel(self):
-		appuifw.app.menu = [(u"Select", self._select_fuel), (u"Delete", self.__delete_field), (u"Back", self.back)]
+		appuifw.app.menu = [(u"Select", self._select_fuel), (u"Delete", self.__delete_field), (u"Modify", self.__modify_field), (u"Back", self.back)]
 		self.__create_list()
 		try:
 			self.list_box_fuel = appuifw.Listbox(map(lambda x:x[1], self.list_fuel))
@@ -48,7 +48,7 @@ class View( object ):
 	def __show_form(self, lista, lista1):
 		
 		percorsi = lista[6]-lista1[6]
-		litri_serbatoio = lista[3] / lista[2]
+		litri_serbatoio = lista1[3] / lista1[2]
 		media_km = percorsi / litri_serbatoio
 		
 		old_title = appuifw.app.title
@@ -68,7 +68,98 @@ class View( object ):
 		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormViewModeOnly)
 		self._iForm.execute()
 		appuifw.app.title = old_title
+		
+	def __modify_field(self):
+		if len(self.list_fuel) > 0:
+			id = self.list_box_fuel.current()
+			self.__get_info(self.list_fuel[id][0])
+			self.__get_info_prec(self.list_fuel[id][0])
+			self.__show_form_modify(self.info_selection, self.info_selection_prec,id)
+	
+	def __show_form_modify(self, lista, lista1, id):
+		
+		percorsi = lista[6]-lista1[6]
+		litri_serbatoio = lista1[3] / lista1[2]
+		media_km = percorsi / litri_serbatoio
+		
+		old_title = appuifw.app.title
+		appuifw.app.title = u"ID: %s Fuel" % lista[0]
+		self._iFields = [( u"Date", "date", lista[1]),
+						 ( u"Price for liter", "float", lista[2]),
+						 ( u"Euro", "float", lista[3]),
+						 ( u"Paid", "text", lista[4] ),
+						 ( u"Who", "text", lista[5] ),
+						 ( u"Km", "number", lista[6] ),
+						 ( u"Another item", "text", lista[7]),
+		                 ( u"Km percorsi", "number", percorsi),
+		                 ( u"Litri Serbatoio", "number", litri_serbatoio),
+		                 ( u"Media Km", "number", media_km)]
 
+		## Mostro il form.
+		self._iIsSaved = False
+		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormEditModeOnly)
+		self._iForm.save_hook = self._markSaved
+		self._iForm.execute()
+		appuifw.app.title = old_title
+		
+		if self.isSaved():
+			# estraggo i dati che mi servono
+			date = self.getDate()
+			priceLiter = self.getPriceLiter()
+			euro = self.getEuro()
+			paid = self.getPaid()
+			who = self.getWho()
+			km = self.getKm()
+			another = self.getAnother()
+			sql_string = u"UPDATE fuel SET (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s') WHERE id=%d" %( date, priceLiter, euro, paid, who, km, another, int(id) )
+			try:
+				db.execute(sql_string)
+			except:
+				db.open(self.dbpath)
+				db.execute(sql_string)
+			appuifw.note(u"Saved", "conf")
+			db.close()
+		appuifw.app.title = old_title
+		
+	## save_hook send True if the form has been saved.
+	def _markSaved( self, aBool ):
+		self._iIsSaved = aBool
+
+	## _iIsSaved getter.
+	def isSaved( self ):
+		return self._iIsSaved
+	
+	def getDate(self):
+		# return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
+		return self._iForm[0][2]
+
+	def getPriceLiter(self):
+		return self._iForm[1][2]
+
+	## ritorna la spesa in euro.
+	def getEuro( self ):
+		# deve essere un float
+		datoStringa = "%s" % self._iForm[2][2]
+		euro = float(datoStringa)
+		return euro
+
+	## ritorna il tipo di Pagamento
+	def getPaid( self ):
+		return self._iForm[3][2]
+		## ritorno chi  stato pagato
+	def getWho( self ):
+		return self._iForm[4][2][1]
+
+	def getKm( self ):
+		return self._iForm[5][2]
+
+	def getAnother( self ):
+		return self._iForm[6][2]
+
+	## Return date field value.
+	def getDay( self ):
+		return strftime("%d/%m/%Y")
+		
 	def __get_info(self, id):
 		import globalui
 		sql_string = u"SELECT * FROM fuel WHERE id=%d" % int(id)
