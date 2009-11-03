@@ -1,14 +1,18 @@
 import appuifw, e32, os, sys, e32db, key_codes
 
-# main_path = "c:\\data\\Python\\main"
-main_path = "E:\\Python\\main"
+try:
+	raise Exception
+except Exception:
+	fr = sys.exc_info()[2].tb_frame
+	fpath = fr.f_code.co_filename
+fdir, fname = os.path.split(fpath)
+main_path = os.path.join('main', fdir)
 sys.path.append(main_path)
 
-# view_path = "c:\\data\\Python\\view"
-view_path = "E:\\Python\\view"
+view_path = os.path.join('view', fdir)
 sys.path.append(view_path)
 
-dbpath = u"%s\\test.db" % main_path
+dbpath = os.path.join(main_path, 'test.db')
 
 ## Initialize database
 db = e32db.Dbms()
@@ -19,13 +23,21 @@ except:
 	db.open(dbpath)
 	try:
 		sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date FLOAT, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
+	except: pass # gia creato
+	try:
 		sql_create = db.execute(u"CREATE TABLE hours (id COUNTER, date FLOAT, hourstart FLOAT, hourend FLOAT, lunch FLOAT, km FLOAT, another VARCHAR)")
+	except: pass # gia creato
+	try:
 		sql_create = db.execute(u"CREATE TABLE cabine (id COUNTER, nome VARCHAR, regione VARCHAR, provincia VARCHAR, indirizzo VARCHAR, note VARCHAR)")
+	except: pass # gia creato
+	try:
 		sql_create = db.execute(u"CREATE TABLE strumenti (id COUNTER, nome VARCHAR, cabina VARCHAR, note VARCHAR)")
+	except: pass # gia creato
+	try:
 		sql_create = db.execute(u"CREATE TABLE interventi (id COUNTER, date FLOAT, cabina VARCHAR, strumento VARCHAR, note VARCHAR)")
+	except: pass # gia creato
+	try:
 		sql_create = db.execute(u"CREATE TABLE buy (id COUNTER, date FLOAT, shop VARCHAR, type VARCHAR, paid VARCHAR, price FLOAT, another VARCHAR)")
-
-
 	except: pass # gia creato
 db.close()
 
