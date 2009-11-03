@@ -85,8 +85,8 @@ class Cabins( object ):
     def setActive_2( self ):#interventi
         # create Form
         self._iFields = [( u"Date", "date", time.time()),
-                         ( u"Cabina", "text"),#anche qua ci vorrebbe un menù con il nome di tutte le cabine inserite
-                         ( u"Strumento", "text"),#idem per gli strumenti
+                         ( u"Cabina", "text"), # anche qua ci vorrebbe un menu con il nome di tutte le cabine inserite
+                         ( u"Strumento", "text"), # idem per gli strumenti
                          ( u"Note", "text")]
         ## Mostro il form.
         self._iIsSaved = False

@@ -51,7 +51,7 @@ class Hours( object ):
 			self.back()
 
 	def export( self ):
-		sql_string = u"INSERT INTO hours (id, date, hourstart, hourend, lunch, km, another) VALUES (%d, %d, %d, %d, %f, %d, '%s');\n"
+		sql_string = u"INSERT INTO hours (date, hourstart, hourend, lunch, km, another) VALUES (%d, %d, %d, %f, %d, '%s');\n"
 		db.open(self.dbpath)
 		if os.path.exists(self.sqlpath):
 			os.remove(self.sqlpath)

@@ -6,13 +6,13 @@ except Exception:
 	fr = sys.exc_info()[2].tb_frame
 	fpath = fr.f_code.co_filename
 fdir, fname = os.path.split(fpath)
-main_path = os.path.join('main', fdir)
+main_path = os.path.join(fdir, 'main')
 sys.path.append(main_path)
 
-view_path = os.path.join('view', fdir)
+view_path = os.path.join(fdir, 'view')
 sys.path.append(view_path)
 
-dbpath = os.path.join(main_path, 'test.db')
+dbpath = u'%s\\test.db' % main_path
 
 ## Initialize database
 db = e32db.Dbms()

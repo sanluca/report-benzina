@@ -51,7 +51,7 @@ class Fuel( object ):
 			self.back()
 
 	def export( self ):
-		sql_string = u"INSERT INTO fuel (id, date, priceLiter, euro, paid, who, km, another) VALUES (%d, %d, %f, %f, '%s', '%s', %d, '%s');\n"
+		sql_string = u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s');\n"
 		db.open(self.dbpath)
 		if os.path.exists(self.sqlpath):
 			os.remove(self.sqlpath)
@@ -60,7 +60,7 @@ class Fuel( object ):
 		dbv.prepare(db, unicode("SELECT * FROM fuel"))
 		for i in range(1, dbv.count_line()+1):
 			dbv.get_line()
-			file.write(sql_string % ( dbv.col(1), dbv.col(2), dbv.col(3), dbv.col(4), dbv.col(5), dbv.col(6), dbv.col(7), dbv.col(8) ))
+			file.write(sql_string % ( dbv.col(2), dbv.col(3), dbv.col(4), dbv.col(5), dbv.col(6), dbv.col(7), dbv.col(8) ))
 			dbv.next_line()
 		file.close()
 		db.close()
