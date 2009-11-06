@@ -51,7 +51,7 @@ class View( object ):
 						 ( u"Shop", "text", lista[2]),
 						 ( u"Type", "text", lista[3]),
 						 ( u"Paid", "text", lista[4] ),
-						 ( u"Price", "text", lista[5] ),
+						 ( u"Price", "number", lista[5] ),
 						 ( u"Another item", "text", lista[6])]
 		                 
 		## Mostro il form.
