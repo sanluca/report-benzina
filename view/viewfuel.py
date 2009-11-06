@@ -48,7 +48,7 @@ class View( object ):
 	def __show_form(self, lista, lista1):
 		
 		percorsi = lista[6]-lista1[6]
-		litri_serbatoio = lista1[3] / lista1[2]
+		litri_serbatoio = lista[3] / lista[2]
 		media_km = percorsi / litri_serbatoio
 		
 		old_title = appuifw.app.title
