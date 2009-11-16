@@ -74,12 +74,13 @@ class View( object ):
 			id = self.list_box_fuel.current()
 			self.__get_info(self.list_fuel[id][0])
 			self.__get_info_prec(self.list_fuel[id][0])
-			self.__show_form_modify(self.info_selection, self.info_selection_prec,id)
+			#self.__show_form_modify(self.info_selection, self.info_selection_prec,id)
+			self.update_modify(self.info_selection, self.info_selection_prec,id)
 	
-	def __show_form_modify(self, lista, lista1, id):
+	def show_form_modify(self, lista, lista1):
 		
 		percorsi = lista[6]-lista1[6]
-		litri_serbatoio = lista1[3] / lista1[2]
+		litri_serbatoio = lista[3] / lista[2]
 		media_km = percorsi / litri_serbatoio
 		
 		old_title = appuifw.app.title
@@ -100,8 +101,21 @@ class View( object ):
 		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormEditModeOnly)
 		self._iForm.save_hook = self._markSaved
 		self._iForm.execute()
-		appuifw.app.title = old_title
+		#appuifw.app.title = old_title
 		
+		
+	## save_hook send True if the form has been saved.
+	def _markSaved( self, aBool ):
+		self._iIsSaved = aBool
+
+	## _iIsSaved getter.
+	def isSaved( self ):
+		return self._iIsSaved
+	
+	def update_modify(self, uno, due ,id):
+		old_title = appuifw.app.title
+		appuifw.app.title = u"Modify Fuel"
+		show_form_modify(uno, due)
 		if self.isSaved():
 			# estraggo i dati che mi servono
 			date = self.getDate()
@@ -111,7 +125,8 @@ class View( object ):
 			who = self.getWho()
 			km = self.getKm()
 			another = self.getAnother()
-			sql_string = u"UPDATE fuel SET (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s') WHERE id=%d" %( date, priceLiter, euro, paid, who, km, another, int(id) )
+			#sql_string = u"UPDATE fuel SET (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s') WHERE id=%d" %( date, priceLiter, euro, paid, who, km, another, int(id) )
+			sql_string = u"UPDATE fuel SET date=%d, priceLiter=%f, euro=%f, paid='%s', who='%s', km=%d, another='%s' WHERE id=%d" %( date, priceLiter, euro, paid, who, km, another, int(id) )
 			try:
 				db.execute(sql_string)
 			except:
@@ -122,12 +137,12 @@ class View( object ):
 		appuifw.app.title = old_title
 		
 	## save_hook send True if the form has been saved.
-	def _markSaved( self, aBool ):
-		self._iIsSaved = aBool
+	#def _markSaved( self, aBool ):
+		#self._iIsSaved = aBool
 
 	## _iIsSaved getter.
-	def isSaved( self ):
-		return self._iIsSaved
+	#def isSaved( self ):
+		#return self._iIsSaved
 	
 	def getDate(self):
 		# return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
