@@ -25,7 +25,7 @@ class View( object ):
 		appuifw.app.title = self.old_title
 
 	def _initialize_hours(self):
-		appuifw.app.menu = [(u"Select", self._select_hours), (u"Delete", self.__delete_field), (u"Back", self.back)]
+		appuifw.app.menu = [(u"Select", self._select_hours), (u"Delete", self.__delete_field), (u"Modify", self.__modify_field), (u"Back", self.back)]
 		self.__create_list()
 		try:
 			self.list_box_hours = appuifw.Listbox(map(lambda x:x[1], self.list_hours))
@@ -57,6 +57,87 @@ class View( object ):
 		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormViewModeOnly)
 		self._iForm.execute()
 		appuifw.app.title = old_title
+		
+	def __modify_field(self):
+		if len(self.list_hours) > 0:
+			id = self.list_hours[self.list_box_hours.current()][0]
+			self.__get_info(id)
+			self.update_modify(self.info_selection,id)
+	
+	def show_form_modify(self,lista):
+		print lista
+		old_title = appuifw.app.title
+		appuifw.app.title = u"ID: %s Hours" % lista[0]
+		self._iFields = [( u"Date", "date", lista[1]),
+						 ( u"Start Time", "time", lista[2]),
+						 ( u"End Time", "time", lista[3]),
+						 ( u"Lunch (min)", "float", lista[4]),
+						 ( u"km", "float", lista[5]),
+						 ( u"Another item", "text", lista[6])]
+
+		## Mostro il form.
+		self._iIsSaved = False
+		self._iForm = appuifw.Form(self._iFields, appuifw.FFormDoubleSpaced+appuifw.FFormEditModeOnly)
+		self._iForm.save_hook = self._markSaved
+		self._iForm.execute()
+		#appuifw.app.title = old_title
+		
+		
+	## save_hook send True if the form has been saved.
+	def _markSaved( self, aBool ):
+		self._iIsSaved = aBool
+
+	## _iIsSaved getter.
+	def isSaved( self ):
+		return self._iIsSaved
+	
+	def getDate(self):
+		# return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
+		return self._iForm[0][2]
+
+	def getStartTime(self):
+		return self._iForm[1][2]
+
+	def getEndTime( self ):
+		return self._iForm[2][2]
+
+	def getLunch( self ):
+		return self._iForm[3][2]
+	
+	def getKm( self ):
+		return self._iForm[4][2]
+
+	def getAnother( self ):
+		return self._iForm[5][2]
+
+	## Return date field value.
+	def getDay( self ):
+		return strftime("%d/%m/%Y")
+	
+	def update_modify(self,lista,id):
+		old_title = appuifw.app.title
+		appuifw.app.title = u"Modify Hours"
+		self.show_form_modify(lista)
+		if self.isSaved():
+			# estraggo i dati che mi servono
+			date = self.getDate()
+			hourstart = self.getStartTime()
+			hourend = self.getEndTime()
+			lunch = self.getLunch()
+			km = self.getKm()
+			another = self.getAnother()
+			#sql_string = u"INSERT INTO hours (date, hourstart, hourend, lunch, km, another) VALUES (%d, %d, %d, %f,%d, '%s')" % ( date, hourstart, hourend, lunch, km, another )
+			sql_string = u"UPDATE hours SET date=%d, hourstart=%d, hourend=%d, lunch=%f, km=%d, another='%s' WHERE id=%d" %( date, hourstart, hourend, lunch, km, another, int(id) )
+			try:
+				db.execute(sql_string)
+			except:
+				db.open(self.dbpath)
+				db.execute(sql_string)
+			appuifw.note(u"Update", "conf")
+			db.close()
+		appuifw.app.title = old_title
+	
+	
 
 	def __get_info(self, id):
 		import globalui

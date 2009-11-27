@@ -34,10 +34,13 @@ try:
 	sql_create = db.execute(u"CREATE TABLE strumenti (id COUNTER, nome VARCHAR, cabina VARCHAR, note VARCHAR)")
 except: pass # gia creato
 try:
-	sql_create = db.execute(u"CREATE TABLE interventi (id COUNTER, date FLOAT, cabina VARCHAR, strumento VARCHAR, note VARCHAR)")
+	sql_create = db.execute(u"CREATE TABLE tickets (id COUNTER, date FLOAT, cabina VARCHAR, strumento VARCHAR, note VARCHAR)")
 except: pass # gia creato
 try:
 	sql_create = db.execute(u"CREATE TABLE buy (id COUNTER, date FLOAT, shop VARCHAR, type VARCHAR, paid VARCHAR, price FLOAT, another VARCHAR)")
+except: pass # gia creato
+try:
+	sql_create = db.execute(u"CREATE TABLE home (id COUNTER, date FLOAT, shop VARCHAR, type VARCHAR, paid VARCHAR, price FLOAT, another VARCHAR)")
 except: pass # gia creato
 db.close()
 
@@ -49,11 +52,13 @@ class _app:
 		appuifw.app.title = u"Report Benzina"
 		appuifw.app.screen = "normal"
 		appuifw.note(u"Welcome to Py-Report")
-		self.lista = [u"Hours", u"Cabins", u"Fuel", u"Buy", u"Exit"]
+		self.lista = [u"Seleziona dal menu'"]
+		#self.lista = [u"Hours", u"Tickets", u"Fuel", u"Buy", u"Exit"]
 		self._initialize_main_()
 
 	def _initialize_main_(self):
-		appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
+		#appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
+		appuifw.app.menu = [(u"Lavoro",((u"Hours", self.hours),(u"Tickets", self.tickets), (u"Buy", self.buy))), (u"Casa", ((u"Spesa", self.home), (u"Benzina", self.fuel))),(u"Exit", self.exit)]
 		self.list_box = appuifw.Listbox(map(lambda x:x, self.lista))
 		self.list_box.bind(key_codes.EKeySelect, self.select_menu)
 		appuifw.app.body = self.list_box
@@ -61,15 +66,31 @@ class _app:
 
 	def run(self):
 		self.lock.wait()
-
+		
+	def hours(self):
+		import hours
+		hours.Hours(dbpath)
+	def tickets(self):
+		import tickets
+		tickets.Tickets(dbpath)
+	def buy(self):
+		import buy
+		buy.Buy(dbpath)
+	def home(self):
+		import home
+		home.Home(dbpath)
+	def fuel(self):
+		import fuel
+		fuel.Fuel(dbpath)
+#da eliminare
 	def select_menu(self):
 		res = self.list_box.current()
 		if res == 0:
 			import hours
 			hours.Hours(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
 		elif res == 1:
-			import cabins
-			cabins.Cabins(dbpath)
+			import tickets
+			tickets.Tickets(dbpath)
 		elif res == 2:
 			import fuel
 			fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
