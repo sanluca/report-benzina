@@ -52,7 +52,7 @@ class View( object ):
 		media_km = percorsi / litri_serbatoio
 		
 		old_title = appuifw.app.title
-		appuifw.app.title = u"ID: %s Fuel" % lista[0]
+		appuifw.app.title = u"ID: %s View Fuel" % lista[0]
 		self._iFields = [( u"Date", "date", lista[1]),
 						 ( u"Price for liter", "float", lista[2]),
 						 ( u"Euro", "float", lista[3]),
@@ -71,9 +71,12 @@ class View( object ):
 		
 	def __modify_field(self):
 		if len(self.list_fuel) > 0:
-			id = self.list_box_fuel.current()
-			self.__get_info(self.list_fuel[id][0])
-			self.__get_info_prec(self.list_fuel[id][0])
+			id = self.list_fuel[self.list_box_fuel.current()][0]
+			print "primo id %d" %id
+			#self.__get_info(self.list_fuel[id][0])
+			self.__get_info(id)
+			#self.__get_info_prec(self.list_fuel[id][0])
+			self.__get_info_prec(id)
 			#self.__show_form_modify(self.info_selection, self.info_selection_prec,id)
 			self.update_modify(self.info_selection, self.info_selection_prec,id)
 	
@@ -84,7 +87,7 @@ class View( object ):
 		media_km = percorsi / litri_serbatoio
 		
 		old_title = appuifw.app.title
-		appuifw.app.title = u"ID: %s Fuel" % lista[0]
+		appuifw.app.title = u"ID: %s Modify Fuel" % lista[0]
 		self._iFields = [( u"Date", "date", lista[1]),
 						 ( u"Price for liter", "float", lista[2]),
 						 ( u"Euro", "float", lista[3]),
@@ -115,14 +118,14 @@ class View( object ):
 	def update_modify(self, uno, due ,id):
 		old_title = appuifw.app.title
 		appuifw.app.title = u"Modify Fuel"
-		show_form_modify(uno, due)
+		self.show_form_modify(uno, due)
 		if self.isSaved():
 			# estraggo i dati che mi servono
 			date = self.getDate()
 			priceLiter = self.getPriceLiter()
 			euro = self.getEuro()
 			paid = self.getPaid()
-			who = self.getWho()
+			who = self.getWho1()
 			km = self.getKm()
 			another = self.getAnother()
 			#sql_string = u"UPDATE fuel SET (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s') WHERE id=%d" %( date, priceLiter, euro, paid, who, km, another, int(id) )
@@ -132,7 +135,7 @@ class View( object ):
 			except:
 				db.open(self.dbpath)
 				db.execute(sql_string)
-			appuifw.note(u"Saved", "conf")
+			appuifw.note(u"Update", "conf")
 			db.close()
 		appuifw.app.title = old_title
 		
@@ -164,6 +167,9 @@ class View( object ):
 		## ritorno chi  stato pagato
 	def getWho( self ):
 		return self._iForm[4][2][1]
+	
+	def getWho1( self ):
+		return self._iForm[4][2]
 
 	def getKm( self ):
 		return self._iForm[5][2]
@@ -178,7 +184,7 @@ class View( object ):
 	def __get_info(self, id):
 		import globalui
 		sql_string = u"SELECT * FROM fuel WHERE id=%d" % int(id)
-		globalui.global_msg_query( sql_string, u"SQL Debug" )
+		#globalui.global_msg_query( sql_string, u"SQL Debug" )
 		self.info_selection = []
 		
 		try: 
@@ -200,11 +206,11 @@ class View( object ):
 		#prendo i km precedenti
 		if id >= 1:
 			sql_string = u"SELECT * FROM fuel WHERE id=%d" % int(id-1)
-			globalui.global_msg_query( sql_string, u"SQL Debug" )
+			#globalui.global_msg_query( sql_string, u"SQL Debug" )
 			self.info_selection_prec = []
 		else:
 			sql_string = u"SELECT * FROM fuel WHERE id=%d" % int(id)
-			globalui.global_msg_query( sql_string, u"SQL Debug" )
+			#globalui.global_msg_query( sql_string, u"SQL Debug" )
 			self.info_selection_prec = []
 
 		try: 
