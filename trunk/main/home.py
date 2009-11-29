@@ -71,11 +71,13 @@ class Home( object ):
 		self._payments = [u"Cash", u"Bancomat", u"Credit card", u"Check", u"Payable"]
 		# elenco fornitori 
 		self._suppliers=[u"Market", u"Despar", u"Coop", u"Visotto", u"Pam", u"Altro"]
+		
+		self._type_buy=[u"Pane", u"Acqua", u"Vino", u"Latte"]
 		# creazione Form
 		self._iFields = [( u"Date", "date", time.time()),
 						 ( u"Shop", "combo", (self._suppliers, 0)),
-						 ( u"Type", "text"),
-						 ( u"Paid", "combo", ( self._payments, 0 ) ),
+						 ( u"Type", "checkbox", (self._type_buy, 0)),
+						 ( u"Paid", "combo", (self._payments, 0 )),
 						 ( u"Price", "float", 0.0),
 						 ( u"Another", "text")]
 		## Mostro il form.
@@ -101,8 +103,8 @@ class Home( object ):
 
 	## 
 	def getType( self ):
-		return self._iForm[2][2]
-
+		#return self._iForm[2][2]
+		return self._type_buy[self._iForm[2][2][1]].encode( "utf-8" )
 	## 
 	def getPaid( self ):
 		return self._payments[self._iForm[3][2][1]].encode( "utf-8" )
