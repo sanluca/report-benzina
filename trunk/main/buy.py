@@ -60,7 +60,7 @@ class Buy( object ):
 		dbv.prepare(db, unicode("SELECT * FROM buy"))
 		for i in range(1, dbv.count_line()+1):
 			dbv.get_line()
-			file.write(sql_string % ( dbv.col(1), dbv.col(2), dbv.col(3), dbv.col(4), dbv.col(5), dbv.col(6), dbv.col(7), dbv.col(8) ))
+			file.write(sql_string % ( dbv.col(1), dbv.col(2), dbv.col(3), dbv.col(4), dbv.col(5), dbv.col(6), dbv.col(7) ))
 			dbv.next_line()
 		file.close()
 		db.close()

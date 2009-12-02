@@ -76,7 +76,7 @@ class Home( object ):
 		# creazione Form
 		self._iFields = [( u"Date", "date", time.time()),
 						 ( u"Shop", "combo", (self._suppliers, 0)),
-						 ( u"Type", "checkbox", (self._type_buy, 0)),
+						 ( u"Type", "combo", (self._type_buy, 0)),
 						 ( u"Paid", "combo", (self._payments, 0 )),
 						 ( u"Price", "float", 0.0),
 						 ( u"Another", "text")]
