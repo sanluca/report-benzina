@@ -83,7 +83,7 @@ class Tickets( object ):
     def getNoteInterventi(self):
         return self._iForm[2][2]
 
-    def insert_interventi(self):
+    def insert_tickets(self):
         old_title = appuifw.app.title
         appuifw.app.title = u"Add Interventi"
         self.setActive()
