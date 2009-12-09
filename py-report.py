@@ -42,6 +42,10 @@ except: pass # gia creato
 try:
 	sql_create = db.execute(u"CREATE TABLE home (id COUNTER, date FLOAT, shop VARCHAR, type VARCHAR, paid VARCHAR, price FLOAT, another VARCHAR)")
 except: pass # gia creato
+try:
+	sql_create = db.execute(u"CREATE TABLE spesa (id COUNTER, stato NUMBER, tipo VARCHAR)")
+except:
+	pass
 db.close()
 
 
@@ -49,7 +53,7 @@ class _app:
 	def __init__(self):
 		self.lock = e32.Ao_lock()
 		self.list_box = None
-		appuifw.app.title = u"Report Benzina"
+		appuifw.app.title = u"Py-Report"
 		appuifw.app.screen = "normal"
 		appuifw.note(u"Welcome to Py-Report")
 		self.lista = [u"Seleziona dal menu'"]
@@ -58,7 +62,7 @@ class _app:
 
 	def _initialize_main_(self):
 		#appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
-		appuifw.app.menu = [(u"Lavoro",((u"Hours", self.hours),(u"Tickets", self.tickets), (u"Buy", self.buy))), (u"Casa", ((u"Spesa", self.home), (u"Benzina", self.fuel))),(u"Exit", self.exit)]
+		appuifw.app.menu = [(u"Lavoro",((u"Hours", self.hours),(u"Tickets", self.tickets), (u"Buy", self.buy))), (u"Casa", ((u"Spesa", self.home), (u"Benzina", self.fuel), (u"Spesa check", self.spesa_check))),(u"Exit", self.exit)]
 		self.list_box = appuifw.Listbox(map(lambda x:x, self.lista))
 		self.list_box.bind(key_codes.EKeySelect, self.select_menu)
 		appuifw.app.body = self.list_box
@@ -82,6 +86,9 @@ class _app:
 	def fuel(self):
 		import fuel
 		fuel.Fuel(dbpath)
+	def spesa_check(self):
+		import spesa
+		spesa.Spesa(dbpath)
 #da eliminare
 	def select_menu(self):
 		res = self.list_box.current()
