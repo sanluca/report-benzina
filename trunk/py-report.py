@@ -12,7 +12,8 @@ sys.path.append(main_path)
 view_path = os.path.join(fdir, 'view')
 sys.path.append(view_path)
 
-dbpath = unicode(os.path.join(main_path, 'test.db'))
+# dbpath = unicode(os.path.join(main_path, 'test.db'))
+dbpath = '%stest.db' % os.getcwd()
 
 ## Initialize database
 db = e32db.Dbms()
