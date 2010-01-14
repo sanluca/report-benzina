@@ -1,0 +1,41 @@
+; Languages
+&EN
+
+; Package header
+#{"Report Benzina"}, (0xEE32D3BB), 1, 0, 0, TYPE=SA
+
+; Dependencies
+[0x101F7961], 0, 0, 0, {"Series60ProductID"}
+[0x1028315F], 0, 0, 0, {"Series60ProductID"}
+(0x20022EE8), 1, 9, 7, {"Python runtime"}
+
+; Vendor names
+%{"madhacker"}
+:"madhacker"
+
+"resource\apps\py-report_0xee32d3bb.rsc"-"!:\resource\apps\py-report_0xee32d3bb.rsc"
+"private\10003a3f\import\apps\py-report_0xee32d3bb_reg.rsc"-"!:\private\10003a3f\import\apps\py-report_0xee32d3bb_reg.rsc"
+"resource\apps\py-report_0xee32d3bb_loc.r01"-"!:\resource\apps\py-report_0xee32d3bb_loc.r01"
+"resource\apps\py-report_0xee32d3bb_aif.mif"-"!:\resource\apps\py-report_0xee32d3bb_aif.mif"
+"private\ee32d3bb\launcher.py"-"!:\private\ee32d3bb\launcher.py"
+"private\ee32d3bb\lib.zip"-"!:\private\ee32d3bb\lib.zip"
+"sys\bin\kf_e32db_ee32d3bb.pyd"-"!:\sys\bin\kf_e32db_ee32d3bb.pyd"
+"private\ee32d3bb\white-list.cfg"-"!:\private\ee32d3bb\white-list.cfg"
+"sys\bin\kf_Py_iad_client_0xee32d3bb.dll"-"!:\sys\bin\kf_Py_iad_client_0xee32d3bb.dll"
+"sys\bin\py-report_0xee32d3bb.exe"-"!:\sys\bin\py-report_0xee32d3bb.exe"
+"py-report.py"-"!:\private\ee32d3bb\default.py"
+"main\__init__.py"-"!:\private\ee32d3bb\main\__init__.py"
+"main\buy.py"-"!:\private\ee32d3bb\main\py-buy.py"
+"main\cabins.py"-"!:\private\ee32d3bb\main\cabins.py"
+"main\fuel.py"-"!:\private\ee32d3bb\main\fuel.py"
+"main\home.py"-"!:\private\ee32d3bb\main\home.py"
+"main\hours.py"-"!:\private\ee32d3bb\main\hours.py"
+"main\spesa.py"-"!:\private\ee32d3bb\main\spesa.py"
+"main\tickets.py"-"!:\private\ee32d3bb\main\tickets.py"
+"view\__init__.py"-"!:\private\ee32d3bb\view\__init__.py"
+"view\viewbuy.py"-"!:\private\ee32d3bb\view\viewbuy.py"
+"view\viewcabins.py"-"!:\private\ee32d3bb\view\viewcabins.py"
+"view\viewfuel.py"-"!:\private\ee32d3bb\view\viewfuel.py"
+"view\viewhome.py"-"!:\private\ee32d3bb\view\viewhome.py"
+"view\viewhours.py"-"!:\private\ee32d3bb\view\viewhours.py"
+"view\viewtickets.py"-"!:\private\ee32d3bb\view\viewtickets.py"
