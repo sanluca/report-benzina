@@ -13,7 +13,8 @@ view_path = os.path.join(fdir, 'view')
 sys.path.append(view_path)
 
 # dbpath = unicode(os.path.join(main_path, 'test.db'))
-dbpath = u'%stest.db' % os.getcwd()
+dbpath = unicode(os.path.join('c:\\system', 'report.db'))
+# dbpath = u'%stest.db' % os.getcwd()
 
 ## Initialize database
 db = e32db.Dbms()
@@ -57,7 +58,7 @@ class _app:
 		appuifw.app.title = u"Py-Report"
 		appuifw.app.screen = "normal"
 		appuifw.note(u"Welcome to Py-Report")
-		self.lista = [u"Seleziona dal menu'"]
+		self.lista = [u"Selezionare dal menu'"]
 		#self.lista = [u"Hours", u"Tickets", u"Fuel", u"Buy", u"Exit"]
 		self._initialize_main_()
 
@@ -92,21 +93,22 @@ class _app:
 		spesa.Spesa(dbpath)
 #da eliminare
 	def select_menu(self):
-		res = self.list_box.current()
-		if res == 0:
-			import hours
-			hours.Hours(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
-		elif res == 1:
-			import tickets
-			tickets.Tickets(dbpath)
-		elif res == 2:
-			import fuel
-			fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
-		elif res == 3:
-			import buy
-			buy.Buy(dbpath)
-		elif res == 4:
-			self.exit()
+		return
+		# res = self.list_box.current()
+		# if res == 0:
+			# import hours
+			# hours.Hours(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
+		# elif res == 1:
+			# import tickets
+			# tickets.Tickets(dbpath)
+		# elif res == 2:
+			# import fuel
+			# fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
+		# elif res == 3:
+			# import buy
+			# buy.Buy(dbpath)
+		# elif res == 4:
+			# self.exit()
 
 	def exit(self):
 		appuifw.note(u"Goodbye")
