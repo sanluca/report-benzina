@@ -68,7 +68,7 @@ class Fuel( object ):
 
 	def insertForm( self ):
 		# list of payment types
-		self._payments = [u"Cash", u"Bancomat", u"Credit card", u"Check", u"Payable"]
+		self._payments = [u"Cash", u"Bancomat", u"Credit card", u"Check", u"Payable", u"Card"]
 		# elenco fornitori 
 		self._suppliers=[u"Esso", u"Agip", u"Shell", u"Q8", u"IP", u"Erg", u"API", u"Tamoil", u"Total"]
 		# creazione Form
