@@ -24,7 +24,7 @@ except:
 	db.create(dbpath)
 	db.open(dbpath)
 try:
-	sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date FLOAT, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
+	sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date FLOAT, auto VARCHAR, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
 	#sql_create = db.execute(u"CREATE TABLE config (id COUNTER, auto VARCHAR, rimborso FLOAT)")
 except: pass # gia creato
 try:
