@@ -25,9 +25,12 @@ except:
 	db.open(dbpath)
 try:
 	sql_create = db.execute(u"CREATE TABLE fuel (id COUNTER, date FLOAT, priceLiter FLOAT, euro FLOAT, paid VARCHAR, who VARCHAR, km FLOAT, another VARCHAR)")
-	sql_create = db.execute(u"CREATE TABLE config (id COUNTER, auto VARCHAR, rimborso FLOAT)")
+	#sql_create = db.execute(u"CREATE TABLE config (id COUNTER, auto VARCHAR, rimborso FLOAT)")
 except: pass # gia creato
-
+try:
+	sql_create = db.execute(u"CREATE TABLE config (id COUNTER, auto VARCHAR, cilindrata FLOAT, rimborso FLOAT)")
+	#sql_create = db.execute(u"INSERT INTO config (auto, rimborso) VALUES (auto, rimborso)")
+	pass
 db.close()
 
 
