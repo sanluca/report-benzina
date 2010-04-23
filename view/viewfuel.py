@@ -72,7 +72,7 @@ class View( object ):
 	def __modify_field(self):
 		if len(self.list_fuel) > 0:
 			id = self.list_fuel[self.list_box_fuel.current()][0]
-			print "primo id %d" %id
+			#print "primo id %d" %id
 			#self.__get_info(self.list_fuel[id][0])
 			self.__get_info(id)
 			#self.__get_info_prec(self.list_fuel[id][0])
