@@ -58,7 +58,7 @@ class View( object ):
 		
 	def __modify_field(self):
 		if len(self.list_config) > 0:
-			id = self.list_fuel[self.list_box_config.current()][0]
+			id = self.list_config[self.list_box_config.current()][0]
 			#print "primo id %d" %id
 			#self.__get_info(self.list_fuel[id][0])
 			self.__get_info(id)
@@ -89,10 +89,10 @@ class View( object ):
 	def isSaved( self ):
 		return self._iIsSaved
 	
-	def update_modify(self, uno, due ,id):
+	def update_modify(self, uno,id):
 		old_title = appuifw.app.title
 		appuifw.app.title = u"Modify Config"
-		self.show_form_modify(uno, due)
+		self.show_form_modify(uno)
 		if self.isSaved():
 			# estraggo i dati che mi servono
 			auto = self.getAuto()
