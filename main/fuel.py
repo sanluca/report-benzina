@@ -51,20 +51,41 @@ class Fuel( object ):
 			self.back()
 
 	def export( self ):
-		sql_string = u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s');\n"
+		sql_string = u"INSERT INTO fuel (date, auto, priceLiter, euro, paid, who, km, another) VALUES (%d, '%s', %f, %f, '%s', '%s', %d, '%s');\n"
 		db.open(self.dbpath)
 		if os.path.exists(self.sqlpath):
 			os.remove(self.sqlpath)
 		file = open(self.sqlpath, 'a')
-		file.write(unicode("DROP TABLE IF EXISTS fuel;\nCREATE TABLE IF NOT EXISTS fuel (id INT, date DOUBLE, priceLiter FLOAT, euro FLOAT, paid VARCHAR(255), who VARCHAR(255), km FLOAT, another VARCHAR(255), PRIMARY KEY (id));\n"))
+		file.write(unicode("DROP TABLE IF EXISTS fuel;\nCREATE TABLE IF NOT EXISTS fuel (id INT, date DOUBLE, auto VARCHAR(255), priceLiter FLOAT, euro FLOAT, paid VARCHAR(255), who VARCHAR(255), km FLOAT, another VARCHAR(255), PRIMARY KEY (id));\n"))
 		dbv.prepare(db, unicode("SELECT * FROM fuel"))
 		for i in range(1, dbv.count_line()+1):
 			dbv.get_line()
-			file.write(sql_string % ( dbv.col(2), dbv.col(3), dbv.col(4), dbv.col(5), dbv.col(6), dbv.col(7), dbv.col(8) ))
+			file.write(sql_string % ( dbv.col(2), dbv.col(3), dbv.col(4), dbv.col(5), dbv.col(6), dbv.col(7), dbv.col(8), dbv.col(9) ))
 			dbv.next_line()
 		file.close()
 		db.close()
 		appuifw.note(u"Saved in %s" % self.sqlpath, "conf")
+		
+	def __getAuto(self):
+		self.list_config = []
+		sql_string = u"SELECT * FROM config"
+		try: 
+			dbv.prepare(db, sql_string)
+		except:
+			db.open(self.dbpath)
+			dbv.prepare(db,sql_string)
+		for i in range(1,dbv.count_line()+1):
+			dbv.get_line()
+			result = []
+			for l in range(1,dbv.col_count()+1):
+				try:
+					result.append(dbv.col(l))
+				except:
+					result.append(None)
+			# self.list_fuel.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
+			self.list_config.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
+			dbv.next_line()
+		db.close()
 
 	def insertForm( self ):
 		# list of payment types
@@ -72,6 +93,7 @@ class Fuel( object ):
 		# elenco fornitori 
 		self._suppliers=[u"Esso", u"Agip", u"Shell", u"Q8", u"IP", u"Erg", u"API", u"Tamoil", u"Total"]
 		# creazione Form
+		self._auto= self.__getAuto()
 		self._iFields = [( u"Date", "date", time.time()),
 						 ( u"Auto", "text"),
 						 ( u"Price for liter", "float", 0.0),
@@ -139,7 +161,7 @@ class Fuel( object ):
 			who = self.getWho()
 			km = self.getKm()
 			another = self.getAnother()
-			sql_string = u"INSERT INTO fuel (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s')" %( date, priceLiter, euro, paid, who, km, another )
+			sql_string = u"INSERT INTO fuel (date, auto, priceLiter, euro, paid, who, km, another) VALUES (%d, '%s', %f, %f, '%s', '%s', %d, '%s')" %( date, priceLiter, euro, paid, who, km, another )
 			try:
 				db.execute(sql_string)
 			except:
