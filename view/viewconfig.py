@@ -25,7 +25,7 @@ class View( object ):
 		appuifw.app.title = self.old_title
 	
 	def _initialize_config(self):
-		appuifw.app.menu = [(u"Select", self._select_fuel), (u"Modify", self.__modify_field), (u"Back", self.back)]
+		appuifw.app.menu = [(u"Select", self._select_config), (u"Modify", self.__modify_field), (u"Back", self.back)]
 		self.__create_list()
 		try:
 			self.list_box_config = appuifw.Listbox(map(lambda x:x[1], self.list_config))
@@ -96,9 +96,10 @@ class View( object ):
 		if self.isSaved():
 			# estraggo i dati che mi servono
 			auto = self.getAuto()
+			cilindrata = self.getCilindrata()
 			rimborso = self.getRimborso()
 			#sql_string = u"UPDATE fuel SET (date, priceLiter, euro, paid, who, km, another) VALUES (%d, %f, %f, '%s', '%s', %d, '%s') WHERE id=%d" %( date, priceLiter, euro, paid, who, km, another, int(id) )
-			sql_string = u"UPDATE fuel SET date=%d, priceLiter=%f, euro=%f, paid='%s', who='%s', km=%d, another='%s' WHERE id=%d" %( date, priceLiter, euro, paid, who, km, another, int(id) )
+			sql_string = u"UPDATE config SET auto='%s', cilindrata=%f, rimborso=%f WHERE id=%d" %( auto, cilindrata, rimborso, int(id) )
 			try:
 				db.execute(sql_string)
 			except:
@@ -119,9 +120,11 @@ class View( object ):
 	def getAuto(self):
 		# return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
 		return self._iForm[0][2]
+	def getCilindrata(self):
+		return self._iForm[1][2]
 
 	def getRimborso(self):
-		return self._iForm[1][2]
+		return self._iForm[2][2]
 
 		
 	def __get_info(self, id):
@@ -143,10 +146,28 @@ class View( object ):
 				globalui.global_msg_query( unicode(err), u"error" )
 		db.close()
 		del globalui
+		
+	def __delete_field(self):
+		if not len(self.list_config) > 0:
+			return
+		id = self.list_config[self.list_box_config.current()][0]
+		import globalui
+		if globalui.global_query(u"Delete ID: '%s'?" % id):
+			sql_string = u"DELETE FROM config WHERE id=%d" % int(id)
+			try:
+				db.execute(sql_string)
+			except:
+				db.open(self.dbpath)
+				db.execute(sql_string)
+			# db.execute(u"ALTER TABLE fuel AUTO_INCREMENT = 1")
+			appuifw.note(u"Deleted", "conf")
+			db.close()			
+		del globalui
+		self._initialize_config()
 	
 	def __create_list(self):
 		self.list_fuel = []
-		sql_string = u"SELECT * FROM config ORDER BY date DESC"
+		sql_string = u"SELECT * FROM config"
 		try: 
 			dbv.prepare(db, sql_string)
 		except:
@@ -161,6 +182,6 @@ class View( object ):
 				except:
 					result.append(None)
 			# self.list_fuel.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
-			self.list_config.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
+			#self.list_config.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
 			dbv.next_line()
 		db.close()
