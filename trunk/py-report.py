@@ -12,8 +12,8 @@ sys.path.append(main_path)
 view_path = os.path.join(fdir, 'view')
 sys.path.append(view_path)
 
-# dbpath = unicode(os.path.join(main_path, 'test.db'))
-dbpath = unicode(os.path.join('c:\\system', 'report.db'))
+dbpath = unicode(os.path.join(main_path, 'test.db'))
+#dbpath = unicode(os.path.join('c:\\system', 'report.db'))
 # dbpath = u'%stest.db' % os.getcwd()
 
 ## Initialize database
@@ -30,6 +30,7 @@ except: pass # gia creato
 try:
 	sql_create = db.execute(u"CREATE TABLE config (id COUNTER, auto VARCHAR, cilindrata FLOAT, rimborso FLOAT)")
 	#sql_create = db.execute(u"INSERT INTO config (auto, rimborso) VALUES (auto, rimborso)")
+except:
 	pass
 db.close()
 
@@ -54,18 +55,18 @@ class _app:
 	def run(self):
 		self.lock.wait()
 		
-    def select_menu(self):
-    	res = self.list_box.current()
-    	
-    	if res == 0:
-    		import fuel
-    		fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
-    	elif res == 1:
-    		pass
-    	
-    	elif res == 2:
-    		self.exit()
-
+	def select_menu(self):
+		res = self.list_box.current()
+		
+		if res == 0:
+			import fuel
+			fuel.Fuel(dbpath) # Gli passo il percorso del database senza doverlo cambiare in tutti i files
+		elif res == 1:
+			import config
+			config.Config(dbpath)
+		elif res == 2:
+			self.exit()
+			
 	def exit(self):
 		appuifw.note(u"Goodbye")
 		self.lock.signal()
