@@ -20,11 +20,11 @@ class Config( object ):
 		self.old_menu = appuifw.app.menu
 		appuifw.app.title = u"Config Menu"
 		db.open(self.dbpath)
-		self.list_fuel = [u"View", u"Back"]
+		self.list_config = [u"Insert", u"View", u"Back"]
 		## Bool
 		self._iIsSaved = False
 		# self.res_fuel = appuifw.selection_list(self.list_fuel)
-		self._initialize_fuel()
+		self._initialize_config()
 
 	def back(self):
 		appuifw.app.body = self.old_body
@@ -32,10 +32,10 @@ class Config( object ):
 		appuifw.app.exit_key_handler = self.old_quit
 		appuifw.app.title = self.old_title
 	
-	def _initialize_fuel(self):
-		appuifw.app.menu = [(u"Select", self.select_fuel), (u"Modify", self.__modify_field), (u"Back", self.back)]
-		self.list_box_config = appuifw.Listbox(map(lambda x:x, self.list_fuel))
-		self.list_box_config.bind(key_codes.EKeySelect, self.select_fuel)
+	def _initialize_config(self):
+		appuifw.app.menu = [(u"Select", self.select_config), (u"Back", self.back)]
+		self.list_box_config = appuifw.Listbox(map(lambda x:x, self.list_config))
+		self.list_box_config.bind(key_codes.EKeySelect, self.select_config)
 		appuifw.app.body = self.list_box_config
 		appuifw.app.exit_key_handler = self.back
 
@@ -49,12 +49,12 @@ class Config( object ):
 			self.back()
 
 	def export( self ):
-		sql_string = u"INSERT INTO config (auto, rimborso) VALUES ('%s', '%s');\n"
+		sql_string = u"INSERT INTO config (auto, cilindrata, rimborso) VALUES ('%s', %f, %f);\n"
 		db.open(self.dbpath)
 		if os.path.exists(self.sqlpath):
 			os.remove(self.sqlpath)
 		file = open(self.sqlpath, 'a')
-		file.write(unicode("DROP TABLE IF EXISTS config;\nCREATE TABLE IF NOT EXISTS fuel (id INT, auto VARCHAR(255),rimborso FLOAT, PRIMARY KEY (id));\n"))
+		file.write(unicode("DROP TABLE IF EXISTS config;\nCREATE TABLE IF NOT EXISTS fuel (id INT, auto VARCHAR(255),cilindrata FLOAT, rimborso FLOAT, PRIMARY KEY (id));\n"))
 		dbv.prepare(db, unicode("SELECT * FROM config"))
 		for i in range(1, dbv.count_line()+1):
 			dbv.get_line()
@@ -95,7 +95,6 @@ class Config( object ):
 	def getCilindrata(self):
 		return self._iForm[1][2]
 
-	## 
 	def getRimborso( self ):
 		# deve essere un float
 		return self._iForm[2][2]
