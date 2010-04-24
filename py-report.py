@@ -42,8 +42,24 @@ class _app:
 		appuifw.app.title = u"Py-Report"
 		appuifw.app.screen = "normal"
 		appuifw.note(u"Welcome to Py-Report")
-		self.lista = [u"Fuel", u"Config", u"Exit"]
+		self.lista = [u"Fuel", u"Config", u"About", u"Exit"]
 		self._initialize_main_()
+		
+		#inserisco immagine di sfondo
+		app.body = c = Canvas()
+		w,h = 20,20
+		im = Image.open("car.jpg")
+
+		# here's prototype
+		# blit(im, source=(0,0,w,h), target=(0,0), mask=None, scale=0)
+		# here are examples
+		c.blit(im)  # put entire image on top-left
+		c.blit(im, target=(70,70)) # put it about mid-screen
+		c.blit(im, (0,0,w/2,h/2))  # put a quater image on top-left
+
+		# double the image size and put it about mid-screen
+		c.blit(im, target=(60,60,100,100), scale=1)
+
 
 	def _initialize_main_(self):
 		appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
@@ -65,6 +81,8 @@ class _app:
 			import config
 			config.Config(dbpath)
 		elif res == 2:
+			pass
+		elif res == 3:
 			self.exit()
 			
 	def exit(self):
