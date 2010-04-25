@@ -48,20 +48,16 @@ class _app:
 		
 		#inserisco immagine di sfondo
 		appuifw.app.body = c = appuifw.Canvas()
-		appuifw.app.directional_pad = False
-		w,h = 20,20
+		try:
+			app.directional_pad = False
+		except:
+			pass
 		im = graphics.Image.open("e:\\python\\car.jpg")
 
 		# here's prototype
 		# blit(im, source=(0,0,w,h), target=(0,0), mask=None, scale=0)
 		# here are examples
 		c.blit(im)  # put entire image on top-left
-		c.blit(im, target=(70,70)) # put it about mid-screen
-		c.blit(im, (0,0,w/2,h/2))  # put a quater image on top-left
-
-		# double the image size and put it about mid-screen
-		c.blit(im, target=(60,60,100,100), scale=1)
-
 
 	def _initialize_main_(self):
 		appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
