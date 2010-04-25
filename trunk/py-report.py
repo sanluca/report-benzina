@@ -1,5 +1,6 @@
 import appuifw, e32, os, sys, e32db, key_codes
 canvas = appuifw.Canvas()
+import graphics
 try:
 	raise Exception
 except Exception:
@@ -46,9 +47,10 @@ class _app:
 		self._initialize_main_()
 		
 		#inserisco immagine di sfondo
-		app.body = c = Canvas()
+		appuifw.app.body = c = appuifw.Canvas()
+		appuifw.app.directional_pad = False
 		w,h = 20,20
-		im = Image.open("car.jpg")
+		im = graphics.Image.open("e:\\python\\car.jpg")
 
 		# here's prototype
 		# blit(im, source=(0,0,w,h), target=(0,0), mask=None, scale=0)
