@@ -43,26 +43,29 @@ class _app:
 		appuifw.app.screen = "normal"
 		appuifw.note(u"Welcome to Py-Report")
 		self.lista = [u"Fuel", u"Config", u"About", u"Exit"]
-		self._initialize_main_()
-		
 		#inserisco immagine di sfondo
 		try:
 			appuifw.app.directional_pad = False
 		except:
 			pass
 		self.img = graphics.Image.open("e:\\python\\car.jpg")
+		self._initialize_main_()
 
-		self.canvas.blit(self.img)  # put entire image on top-left
 
 	def handle_redraw(self, rect = None):
-		self.canvas.blit(self.img)
+		try: 
+			self.canvas.blit(self.img)
+		except:
+			pass
 
 	def _initialize_main_(self):
 		appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
 		self.list_box = appuifw.Listbox(map(lambda x:x, self.lista))
 		self.list_box.bind(key_codes.EKeySelect, self.select_menu)
 		# appuifw.app.body = self.list_box
-		appuifw.app.body = self.canvas = appuifw.Canvas(event_callback = None, redraw_callback = self.handle_redraw)
+		self.canvas = appuifw.Canvas(event_callback = None, redraw_callback = self.handle_redraw)
+		self.canvas.blit(self.img)
+		appuifw.app.body = self.canvas 
 		appuifw.app.exit_key_handler = self.exit
 		
 	def run(self):
