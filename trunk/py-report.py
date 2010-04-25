@@ -1,6 +1,4 @@
-import appuifw, e32, os, sys, e32db, key_codes
-canvas = appuifw.Canvas()
-import graphics
+import appuifw, e32, os, sys, e32db, key_codes, graphics
 try:
 	raise Exception
 except Exception:
@@ -38,6 +36,7 @@ db.close()
 
 class _app:
 	def __init__(self):
+		self.canvas = None
 		self.lock = e32.Ao_lock()
 		self.list_box = None
 		appuifw.app.title = u"Py-Report"
@@ -47,23 +46,23 @@ class _app:
 		self._initialize_main_()
 		
 		#inserisco immagine di sfondo
-		appuifw.app.body = c = appuifw.Canvas()
 		try:
-			app.directional_pad = False
+			appuifw.app.directional_pad = False
 		except:
 			pass
-		im = graphics.Image.open("e:\\python\\car.jpg")
+		self.img = graphics.Image.open("e:\\python\\car.jpg")
 
-		# here's prototype
-		# blit(im, source=(0,0,w,h), target=(0,0), mask=None, scale=0)
-		# here are examples
-		c.blit(im)  # put entire image on top-left
+		self.canvas.blit(self.img)  # put entire image on top-left
+
+	def handle_redraw(self, rect = None):
+		self.canvas.blit(self.img)
 
 	def _initialize_main_(self):
 		appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
 		self.list_box = appuifw.Listbox(map(lambda x:x, self.lista))
 		self.list_box.bind(key_codes.EKeySelect, self.select_menu)
-		appuifw.app.body = self.list_box
+		# appuifw.app.body = self.list_box
+		appuifw.app.body = self.canvas = appuifw.Canvas(event_callback = None, redraw_callback = self.handle_redraw)
 		appuifw.app.exit_key_handler = self.exit
 		
 	def run(self):
