@@ -1,5 +1,5 @@
 import appuifw, e32, os, sys, e32db, key_codes
-
+canvas = appuifw.Canvas()
 try:
 	raise Exception
 except Exception:
