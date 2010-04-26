@@ -1,4 +1,7 @@
 import appuifw, e32, os, sys, e32db, key_codes, graphics
+from appuifw import *
+from graphics import *
+
 try:
 	raise Exception
 except Exception:
@@ -33,7 +36,6 @@ except:
 	pass
 db.close()
 
-
 class _app:
 	def __init__(self):
 		self.canvas = None
@@ -48,15 +50,16 @@ class _app:
 			appuifw.app.directional_pad = False
 		except:
 			pass
+		appuifw.app.screen='normal'
 		self.img = graphics.Image.open("e:\\python\\car.jpg")
 		self._initialize_main_()
 
 
-	def handle_redraw(self, rect = None):
-		try: 
-			self.canvas.blit(self.img)
-		except:
-			pass
+	def handle_redraw(self, rect):
+		#try: 
+		self.canvas.blit(self.img)
+		#except:
+			#pass
 
 	def _initialize_main_(self):
 		appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
@@ -64,9 +67,10 @@ class _app:
 		self.list_box.bind(key_codes.EKeySelect, self.select_menu)
 		# appuifw.app.body = self.list_box
 		self.canvas = appuifw.Canvas(event_callback = None, redraw_callback = self.handle_redraw)
-		self.canvas.blit(self.img)
-		appuifw.app.body = self.canvas 
-		appuifw.app.exit_key_handler = self.exit
+		#self.canvas.blit(self.img)
+		appuifw.app.body = self.canvas
+		#appuifw.app.screen = "full"
+		#appuifw.app.exit_key_handler = self.exit
 		
 	def run(self):
 		self.lock.wait()
