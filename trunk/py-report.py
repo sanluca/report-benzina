@@ -58,6 +58,7 @@ class _app:
 	def handle_redraw(self, rect):
 		#try: 
 		self.canvas.blit(self.img)
+		self.canvas.text(u"Fuel", u"Config", u"About", u"Exit")
 		#except:
 			#pass
 
@@ -65,10 +66,10 @@ class _app:
 		appuifw.app.menu = [(u"Select", self.select_menu), (u"Exit", self.exit)]
 		self.list_box = appuifw.Listbox(map(lambda x:x, self.lista))
 		self.list_box.bind(key_codes.EKeySelect, self.select_menu)
-		# appuifw.app.body = self.list_box
-		self.canvas = appuifw.Canvas(event_callback = None, redraw_callback = self.handle_redraw)
+		appuifw.app.body = self.list_box
+		#self.canvas = appuifw.Canvas(event_callback = None, redraw_callback = self.handle_redraw)
 		#self.canvas.blit(self.img)
-		appuifw.app.body = self.canvas
+		#appuifw.app.body = self.canvas
 		#appuifw.app.screen = "full"
 		#appuifw.app.exit_key_handler = self.exit
 		
