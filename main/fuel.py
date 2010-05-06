@@ -83,7 +83,7 @@ class Fuel( object ):
 				except:
 					result.append(None)
 			# self.list_fuel.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
-			self.list_config.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
+			self.list_config.append((result[0], unicode("[%s]" % (result[1]))))#, strftime("%d/%m/%Y", time.localtime(result[1]))))))
 			dbv.next_line()
 		db.close()
 
@@ -92,10 +92,12 @@ class Fuel( object ):
 		self._payments = [u"Cash", u"Bancomat", u"Credit card", u"Check", u"Payable", u"Card"]
 		# elenco fornitori 
 		self._suppliers=[u"Esso", u"Agip", u"Shell", u"Q8", u"IP", u"Erg", u"API", u"Tamoil", u"Total"]
+		#elenco auto
+		#self._auto=__getAuto()
 		# creazione Form
 		self._auto= self.__getAuto()
 		self._iFields = [( u"Date", "date", time.time()),
-						 ( u"Auto", "text"),
+						 ( u"Auto", "combo", (self.__getAuto(),0)),
 						 ( u"Price for liter", "float", 0.0),
 						 ( u"Euro", "float", 0.0),
 						 ( u"Paid", "combo", ( self._payments, 0 ) ),

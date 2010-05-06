@@ -166,7 +166,7 @@ class View( object ):
 		self._initialize_config()
 	
 	def __create_list(self):
-		self.list_fuel = []
+		self.list_config = []
 		sql_string = u"SELECT * FROM config"
 		try: 
 			dbv.prepare(db, sql_string)
@@ -182,6 +182,6 @@ class View( object ):
 				except:
 					result.append(None)
 			# self.list_fuel.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
-			#self.list_config.append((result[0], unicode("[%s] %s" % (result[0], strftime("%d/%m/%Y", time.localtime(result[1]))))))
+			self.list_config.append((result[0], unicode("[%s]" % (result[1]))))#, ("%s", result[1])))))
 			dbv.next_line()
 		db.close()
