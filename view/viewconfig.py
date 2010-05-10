@@ -182,6 +182,6 @@ class View( object ):
 				except:
 					result.append(None)
 			# self.list_fuel.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
-			self.list_config.append((result[0], unicode("[%s]" % (result[1]))))#, ("%s", result[1])))))
+			self.list_config.append((result[0], unicode("[%s] %s" % (result[1], result[2]))))#, ("%s", result[1])))))
 			dbv.next_line()
 		db.close()
