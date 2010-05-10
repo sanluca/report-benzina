@@ -68,6 +68,7 @@ class Fuel( object ):
 		
 	def __getAuto(self):
 		self.list_config = []
+		self.result = []
 		sql_string = u"SELECT * FROM config"
 		try: 
 			dbv.prepare(db, sql_string)
@@ -76,16 +77,17 @@ class Fuel( object ):
 			dbv.prepare(db,sql_string)
 		for i in range(1,dbv.count_line()+1):
 			dbv.get_line()
-			result = []
 			for l in range(1,dbv.col_count()+1):
 				try:
-					result.append(dbv.col(l))
+					self.result.append(dbv.col(l))
+					self.list_config.append(self.result[l][0])
 				except:
-					result.append(None)
+					self.result.append(None)
 			# self.list_fuel.append((result[0], unicode(strftime("%d/%m/%Y", time.localtime(result[1])))))
-			self.list_config.append((result[0], unicode("[%s]" % (result[1]))))#, strftime("%d/%m/%Y", time.localtime(result[1]))))))
+			# self.list_config.append((result[0], unicode("[%s]" % (result[1]))))#, strftime("%d/%m/%Y", time.localtime(result[1]))))))
 			dbv.next_line()
 		db.close()
+		return self.list_config
 
 	def insertForm( self ):
 		# list of payment types
@@ -95,7 +97,7 @@ class Fuel( object ):
 		#elenco auto
 		#self._auto=__getAuto()
 		# creazione Form
-		self._auto= self.__getAuto()
+		print u'%s' % self.__getAuto()
 		self._iFields = [( u"Date", "date", time.time()),
 						 ( u"Auto", "combo", (self.__getAuto(), 0) ),
 						 ( u"Price for liter", "float", 0.0),
