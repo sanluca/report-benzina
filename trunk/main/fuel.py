@@ -123,30 +123,33 @@ class Fuel( object ):
 	def getDate(self):
 		# return strftime("%d/%m/%Y", time.localtime(self._iForm[0][2]))
 		return self._iForm[0][2]
-
-	def getPriceLiter(self):
+	
+	def getAuto(self):
 		return self._iForm[1][2]
+	
+	def getPriceLiter(self):
+		return self._iForm[2][2]
 
 	## ritorna la spesa in euro.
 	def getEuro( self ):
 		# deve essere un float
-		datoStringa = "%s" % self._iForm[2][2]
+		datoStringa = "%s" % self._iForm[3][2]
 		euro = float(datoStringa)
 		return euro
 
 	## ritorna il tipo di Pagamento
 	def getPaid( self ):
-		return self._payments[self._iForm[3][2][1]].encode( "utf-8" )
+		return self._payments[self._iForm[4][2][1]].encode( "utf-8" )
 
 	## ritorno chi  stato pagato
 	def getWho( self ):
-		return self._suppliers[self._iForm[4][2][1]].encode( "utf-8" )
+		return self._suppliers[self._iForm[5][2][1]].encode( "utf-8" )
 
 	def getKm( self ):
-		return self._iForm[5][2]
+		return self._iForm[6][2]
 
 	def getAnother( self ):
-		return self._iForm[6][2]
+		return self._iForm[7][2]
 
 	## Return date field value.
 	def getDay( self ):
@@ -159,13 +162,15 @@ class Fuel( object ):
 		if self.isSaved():
 			# estraggo i dati che mi servono
 			date = self.getDate()
+			auto = self.getAuto()
+			#print u'%s' % self.getAuto()
 			priceLiter = self.getPriceLiter()
 			euro = self.getEuro()
 			paid = self.getPaid()
 			who = self.getWho()
 			km = self.getKm()
 			another = self.getAnother()
-			sql_string = u"INSERT INTO fuel (date, auto, priceLiter, euro, paid, who, km, another) VALUES (%d, '%s', %f, %f, '%s', '%s', %d, '%s')" %( date, priceLiter, euro, paid, who, km, another )
+			sql_string = u"INSERT INTO fuel (date, auto, priceLiter, euro, paid, who, km, another) VALUES (%d, '%s', %f, %f, '%s', '%s', %d, '%s')" %( date, auto, priceLiter, euro, paid, who, km, another )
 			try:
 				db.execute(sql_string)
 			except:
